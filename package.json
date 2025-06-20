@@ -9,7 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "lit": "^3.3.0"
+    "@lit-labs/observers": "^2.0.5",
+    "@lit-labs/router": "^0.1.4",
+    "lit": "^3.3.0",
+    "urlpattern-polyfill": "^10.1.0"
   },
   "devDependencies": {
     "typescript": "~5.8.3",

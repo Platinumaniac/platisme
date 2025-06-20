@@ -3,7 +3,7 @@ export class Vector2 {
 	x: number = 0;
 	y: number = 0;
 
-	constructor(x: number, y: number) {
+	constructor(x: number = 0, y: number = 0) {
 		this.x = x;
 		this.y = y;
 	}
@@ -13,7 +13,7 @@ export class Vector2 {
 	}
 
 	toString(): string {
-		return `${this.x},${this.y}`
+		return `${this.x},${this.y}`;
 	}
 
 	add(addVector: Vector2): Vector2 {
@@ -29,8 +29,19 @@ export class Vector2 {
 			this.y * mulVector.y
 		)
 	}
+	
+	div(divVector: Vector2): Vector2 {
+		return new Vector2(
+			this.x / divVector.x,
+			this.y / divVector.y
+		)
+	}
 
 	static fromAngle(angle: number): Vector2 {
 		return new Vector2(Math.cos(angle), Math.sin(angle));
+	}
+
+	toAngle(): number {
+		return Math.atan2(this.y, this.x);
 	}
 }

@@ -1,0 +1,45 @@
+
+@property --progress {
+	syntax: "<number>";
+	initial-value: 0;
+	inherits: false;
+}
+
+@property --amplitude {
+	syntax: "<number>";
+	initial-value: 60;
+	inherits: false;
+}
+
+@property --mix-factor {
+	syntax: "<percentage>";
+	initial-value: 0%;
+	inherits: false;
+}
+
+.star {
+
+	--angle: calc(pi / 4);
+	--delay: 1s;
+
+	fill: color-mix(in srgb, hsl(268, 37%, 62%), var(--bg-color) var(--mix-factor));
+	
+	x: calc((cos(var(--angle)) * var(--progress) * 1px) + sin(var(--progress ) / 10) * var(--amplitude) * sin(var(--angle)) * 1px );
+	y: calc((sin(var(--angle)) * var(--progress) * 1px) + sin(var(--progress ) / 10) * var(--amplitude) * cos(var(--angle)) * -1px );
+
+	animation: 6s linear var(--delay) infinite star-path;
+}
+
+@keyframes star-path {
+	from {
+		--progress: 0;
+		--mix-factor: 0%;
+	}
+
+	to {
+		--progress: 500;
+		--mix-factor: 100%;
+	}
+}
+
+

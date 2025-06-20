@@ -1,4 +1,5 @@
 {
+  
   "compilerOptions": {
     "target": "ES2020",
     "experimentalDecorators": true,
@@ -6,6 +7,7 @@
     "module": "ESNext",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
+    "checkJs": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",

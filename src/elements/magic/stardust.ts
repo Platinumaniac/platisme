@@ -157,7 +157,7 @@ class StarTrail {
 
 
 
-@customElement("plat-stardust")
+@customElement("old-stardust")
 export class MagicStardust extends LitElement {
 
     trails: StarTrail[];

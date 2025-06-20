@@ -8,7 +8,7 @@ export class ExternalLinks extends LitElement {
 		return html`
 			<h2>Also check out</h2>
 			<div>
-				<a href="https://rspace.co.uk" target="blank" >
+				<a href="https://rspace.co.uk" target="_blank" >
 					<img src="/src/assets/rspace.jpg" />
 				</a>
 			</div>
