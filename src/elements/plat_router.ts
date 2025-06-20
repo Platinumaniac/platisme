@@ -6,6 +6,7 @@ import "urlpattern-polyfill";
 
 import "./index/index_page.ts";
 import "./blog/blog.ts";
+import "./general/auto_redirect.ts"
 
 //const entry: Object = await import("./blog/entries/test/entry.ts")
 
@@ -15,7 +16,8 @@ import "./blog/blog.ts";
 export class PlatRouter extends LitElement {
 	private router = new Router(this, [
 		{path: "/", render: () => html`<plat-index-page></plat-index-page>`},
-		{path: "/blog/", render: () => html`<plat-blog-page></plat-blog-page>`},
+		{path: "/blog", render: () => html`<plat-redirect path="/blog/list"></plat-redirect>`},
+		{path: "/blog/", render: () => html`<plat-redirect path="/blog/list"></plat-redirect>`},
 		{path: "/blog/*", render: () => html`<plat-blog-page></plat-blog-page>`}
   	]);
 

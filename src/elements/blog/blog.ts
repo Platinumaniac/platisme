@@ -12,7 +12,6 @@ export class BlogRouter extends LitElement {
 		super();
 		
 		this.routes = new Routes(this, [
-			{path: "/", render: () => html`<h1>List</h1>`},
 			{path: "list", render: () => html`<h1>List</h1>`}
 		])
 	}
