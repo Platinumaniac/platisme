@@ -1,21 +1,52 @@
 import { css, html, LitElement, svg, unsafeCSS, type CSSResultGroup, type HTMLTemplateResult, type SVGTemplateResult } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import starStyles from "./stardust.css?inline";
-
-
+import { styleMap } from "lit/directives/style-map.js";
+import { Vector2 } from "../../vectors";
 
 
 @customElement("css-stardust")
 export class CsStardust extends LitElement {
 
-	generateStars(): SVGTemplateResult {
-		return svg``
+	@property({type: String})
+	imagePath: string;
+
+	constructor() {
+		super();
+		this.imagePath = "";
+	}
+
+
+	generateTrail(amount: number, delay: number = .1, angle: number = Math.PI / 4, origin: Vector2): SVGTemplateResult {
+
+		let stars: SVGTemplateResult[] = [];
+
+		for (let index = 0; index < amount; index ++) {
+
+			const styles = {
+				"--delay": `${index * delay}s`,
+				"--angle": angle,
+				"--duration": "8s",
+				"--speed": 9,
+				"--origin-x": `${origin.x}px`,
+				"--origin-y": `${origin.y}px`
+			}
+
+			stars.push(
+				svg`<image width="64" height="64" href=${this.imagePath} class="star" style=${styleMap(styles)}></image>`
+			);
+		}
+
+		return svg`
+		${stars}`;
 	}
 
 	protected render(): HTMLTemplateResult {
 		return html`
 			<svg>
-				<rect width="20" height="20" class="star" ></rect>
+				${this.generateTrail(20, .1, Math.PI / 2, new Vector2())}
+				${this.generateTrail(20, .1, Math.PI / 4, new Vector2())}
+				${this.generateTrail(10, .1, 0, new Vector2())}
 			</svg>
 		`;
 	}
