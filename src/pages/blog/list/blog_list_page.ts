@@ -24,10 +24,9 @@ export class PlatBlogListElement extends LitElement {
 		super();
 		this.basePath = "../entries/";
 		this.entries = [];
-		this.tagFilters = [Tag.Small];
+		this.tagFilters = [];
 		this.entryPaths = [
 			"template",
-			"game_template",
 			"3"
 		];
 		
