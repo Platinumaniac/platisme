@@ -1,7 +1,8 @@
 :root {
-	--bg-color: hsl(270, 19%, 7%);
-	--accent-color: hsl(258, 42%, 27%);
-	--accent-color-light: hsl(253, 76%, 64%);
+	--bg-color: #0f0f15;
+	--accent-color: #473bce;
+	--accent-color-light: #7c5cd6;
+	--accent-color-lighter: #b08fe2;
 
 }
 
