@@ -5,4 +5,4 @@ export type BlogData = {
 	tagDB: BlogTagDB;
 }
 
-export const blogContext = createContext<BlogTagDB>(Symbol("blogData"));
+export const blogContext = createContext<BlogData>(Symbol("blogData"));
