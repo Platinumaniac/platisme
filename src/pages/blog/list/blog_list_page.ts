@@ -1,18 +1,18 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, property } from "lit/decorators.js";
 import "./blog_list_entry";
 import "./blog_list_filter";
 import { Tag, type BlogPostMetadata, type BlogTag } from "../../../types";
 import { blogContext, type BlogData } from "../blog_context";
-import { consume } from "@lit/context";
-import type { BlogTagDB } from "../../../blog_tags";
+import { provide } from "@lit/context";
+import { BlogTagDB } from "../../../blog_tags";
 
 @customElement("plat-blog-list")
 export class PlatBlogListElement extends LitElement {
 
-	@consume({context: blogContext, subscribe: true})
+	@provide({context: blogContext})
 	@property({attribute: false})
-	private data?: BlogTagDB;
+	public blogData: BlogData;
 
 	private entryPaths: string[];
 	private entries: HTMLTemplateResult[];
@@ -21,10 +21,14 @@ export class PlatBlogListElement extends LitElement {
 
 	constructor() {
 		super();
+
+		this.blogData = {
+			tagDB: new BlogTagDB()
+		};
+
 		this.basePath = "../entries/";
 		this.entries = [];
 		this.tagFilters = [
-			Tag.Game
 		];
 		this.entryPaths = [
 			"template",
@@ -76,7 +80,7 @@ export class PlatBlogListElement extends LitElement {
 	}
 
 	protected render(): HTMLTemplateResult {
-		console.log(this.data);
+		console.log(this.blogData);
 		return html`
 			<div>
 				<plat-blog-filter .tagFilters=${this.tagFilters}></plat-blog-filter>
