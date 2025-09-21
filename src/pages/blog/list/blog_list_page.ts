@@ -1,35 +1,35 @@
-import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type TemplateResult } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
+import { customElement, property, state } from "lit/decorators.js";
 import "./blog_list_entry";
-import type { BlogPostMetadata, BlogTag } from "../../../types";
-
-
-enum Tag {
-	Big = "big",
-	Small = "small",
-	Info = "info",
-	Game = "game"
-}
-
+import "./blog_list_filter";
+import { Tag, type BlogPostMetadata, type BlogTag } from "../../../types";
+import { blogContext, type BlogData } from "../blog_context";
+import { consume } from "@lit/context";
+import type { BlogTagDB } from "../../../blog_tags";
 
 @customElement("plat-blog-list")
 export class PlatBlogListElement extends LitElement {
-	
-	entryPaths: string[];
-	entries: HTMLTemplateResult[];
-	tagFilters: Tag[]
-	basePath: string;
+
+	@consume({context: blogContext, subscribe: true})
+	@property({attribute: false})
+	private data?: BlogTagDB;
+
+	private entryPaths: string[];
+	private entries: HTMLTemplateResult[];
+	private tagFilters: Tag[]
+	private basePath: string;
 
 	constructor() {
 		super();
 		this.basePath = "../entries/";
 		this.entries = [];
-		this.tagFilters = [];
+		this.tagFilters = [
+			Tag.Game
+		];
 		this.entryPaths = [
 			"template",
 			"3"
-		];
-		
+		];	
 	}
 
 	connectedCallback(): void {
@@ -71,37 +71,37 @@ export class PlatBlogListElement extends LitElement {
 			} catch (error) {
 				
 			}
-
-
-			
 		}
 		this.scheduleUpdate();
 	}
 
-
 	protected render(): HTMLTemplateResult {
+		console.log(this.data);
 		return html`
+			<div>
+				<plat-blog-filter .tagFilters=${this.tagFilters}></plat-blog-filter>
+			</div>
 			<div class="list">
 				${this.entries}
 			</div>
 		`;
 	}
 
-	static styles?: CSSResultGroup = [
-		css`
-			:host {
-				width: 100%;
-				display: flex;
-				justify-content: center;
-			}
+	static styles?: CSSResultGroup = css`
+		:host {
+			display: grid;
+			grid-template-rows: 4rem auto;
+			grid-template-columns: 85%;
+			justify-content: center;
+			gap: 1rem;
 
-			.list {
-				width: 50%;
+			margin: 1rem;
+		}
 
-				display: grid;
-				gap: 3rem;
-				align-items: center;
-			}
-		`
-	];
+		.list {
+			display: grid;
+			gap: 3rem;
+			align-items: center;
+		}
+	`;
 }

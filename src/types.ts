@@ -1,3 +1,9 @@
+export enum Tag {
+	Big = "big",
+	Small = "small",
+	Info = "info",
+	Game = "game"
+}
 
 export type BlogPostMetadata = {
 	heroPath: string;
@@ -9,4 +15,15 @@ export type BlogPostMetadata = {
 
 export type BlogTag = {
 	name: string;
+}
+
+export type BlogTagDataCollection = {
+	tags: BlogTagMetadata[]
+}
+
+export type BlogTagMetadata = {
+	name: string;
+	icon: string;
+	color: string;
+	alt_color: string;
 }

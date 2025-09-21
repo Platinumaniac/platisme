@@ -22,10 +22,17 @@ export class BlogTagElement extends LitElement {
 	static styles: CSSResultGroup = [
 		css`
 			img {
+				display: flex;
+				align-self: center;
+				justify-self: center;
+
 				width: 4rem;
 				aspect-ratio: 1 / 1;
 
 				image-rendering: pixelated;
+
+				
+
 			}
 		`
 	];

@@ -9,6 +9,8 @@ export class PlatBlogListEntryElement extends LitElement {
 	@property({type: Object})
 	public postMetadata: BlogPostMetadata;
 
+	
+
 	public constructor() {
 		super();
 		this.postMetadata = {
@@ -28,7 +30,6 @@ export class PlatBlogListEntryElement extends LitElement {
 		}
 
 		return renderedTags;
-
 	}
 
 	protected render(): HTMLTemplateResult {
