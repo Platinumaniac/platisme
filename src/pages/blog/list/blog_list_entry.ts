@@ -36,7 +36,6 @@ export class PlatBlogListEntryElement extends LitElement {
 	}
 
 	protected render(): HTMLTemplateResult {
-		console.log(this.blogData)
 		return html`
 			<a href=/blog/view/${this.postMetadata.postId} class="pill" draggable="false">
 				<img class="hero" src=${this.postMetadata.heroPath}/>

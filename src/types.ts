@@ -27,3 +27,11 @@ export type BlogTagMetadata = {
 	color: string;
 	alt_color: string;
 }
+export function getDefaultBlogTagMetadata(): BlogTagMetadata {
+	return {
+		name: "",
+		icon: "",
+		color: "",
+		alt_color: ""
+	};
+}

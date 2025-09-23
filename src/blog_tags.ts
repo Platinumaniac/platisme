@@ -18,4 +18,8 @@ export class BlogTagDB {
 			//todo: add error handling
 		}
 	}
+
+	getTagMetadata(tagName: string): BlogTagMetadata | undefined {
+		return this.blogTags.find((blogTag) => blogTag.name === tagName);
+	}
 }

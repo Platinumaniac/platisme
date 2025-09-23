@@ -37,3 +37,4 @@ export class BlogTagElement extends LitElement {
 		`
 	];
 }
+

@@ -1,111 +1,97 @@
-import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
-import "./blog_list_entry";
-import "./blog_list_filter";
-import { Tag, type BlogPostMetadata, type BlogTag } from "../../../types";
+import { html, LitElement, type HTMLTemplateResult } from "lit";
+import { customElement, state } from "lit/decorators.js";
 import { blogContext, type BlogData } from "../blog_context";
-import { provide } from "@lit/context";
-import { BlogTagDB } from "../../../blog_tags";
+import { consume } from "@lit/context";
+import { type BlogPostMetadata, type BlogTag, Tag } from "../../../types";
+import "./blog_list_entry";
+import "./blog_list_search";
+import { Task } from "@lit/task";
 
 @customElement("plat-blog-list")
 export class PlatBlogListElement extends LitElement {
 
-	@provide({context: blogContext})
-	@property({attribute: false})
-	public blogData: BlogData;
+	@consume({context: blogContext})
+	private blogData?: BlogData
 
-	private entryPaths: string[];
-	private entries: HTMLTemplateResult[];
-	private tagFilters: Tag[]
-	private basePath: string;
+	@state()
+	private tagFilters: Tag[];
 
+	private entryListTask: Task;
+	
 	constructor() {
 		super();
 
-		this.blogData = {
-			tagDB: new BlogTagDB()
-		};
-
-		this.basePath = "../entries/";
-		this.entries = [];
 		this.tagFilters = [
+			Tag.Small,
+			Tag.Info,
+			Tag.Game
 		];
-		this.entryPaths = [
-			"template",
-			"3"
-		];	
+
+		this.entryListTask = new Task(this, {
+			task: async (filters, {signal}) => {return await this.loadEntries(filters)},
+			args: () => [...this.tagFilters] as const
+		});
+	
 	}
 
-	connectedCallback(): void {
-		this.loadEntries();
-	}
+	private passesFilter(filters: readonly Tag[], blogPost: BlogPostMetadata): boolean {
 
-	private passesFilter(tags: BlogTag[]): boolean {
-		let matches: number = 0;
+		for (const filter of filters) {
+			const matchingTag: BlogTag | undefined = blogPost.tags.find((tag) => tag.name === filter.toString());
 
-		for (const filter of this.tagFilters) {
-			for (const tag of tags) {
-				if (tag.name == filter.toString()) {
-					matches += 1;
-				}
+			if (!matchingTag) {
+				return false;
 			}
 		}
 
-		return matches == this.tagFilters.length;
+		return true;
 	}
 
-	async loadEntries() {
-		this.entries = [];
+	private removeFilter(removeEvent: CustomEvent<number>) {
+		this.tagFilters.splice(removeEvent.detail, 1);
+		this.tagFilters = [...this.tagFilters];
+	}
 
-		for (const entry of this.entryPaths) {
+	private async loadEntries(filters: readonly Tag[]): Promise<HTMLTemplateResult[]> {
+		if (!this.blogData) return [];
+
+		let entryFragments: HTMLTemplateResult[] = [];
+
+		for (const entry of this.blogData.publicEntries) {
 			let entryMeta: BlogPostMetadata;
 
 			try {
-				entryMeta = await import(`${this.basePath}${entry}/meta.json`) as BlogPostMetadata;
+				entryMeta = await import(`../entries/${entry}/meta.json`) as BlogPostMetadata;
 
-				if (this.tagFilters.length > 0) {
-					if (!this.passesFilter(entryMeta.tags)) continue;
-				}	
+				if (!this.passesFilter(filters, entryMeta)) continue;
 
-				this.entries.push(
+				entryFragments.push(
 					html`
 						<plat-blog-list-entry .postMetadata=${entryMeta}>
 						</plat-blog-list-entry>
-				`);
+					`);
 			} catch (error) {
-				
+				throw(error);
 			}
 		}
-		this.scheduleUpdate();
+		console.log(entryFragments)
+		return entryFragments;
 	}
 
+
+
 	protected render(): HTMLTemplateResult {
-		console.log(this.blogData);
+		
 		return html`
 			<div>
-				<plat-blog-filter .tagFilters=${this.tagFilters}></plat-blog-filter>
-			</div>
-			<div class="list">
-				${this.entries}
+				<plat-blog-search .tagFilters=${this.tagFilters} @remove=${this.removeFilter}></plat-blog-search>
+				${this.entryListTask.render({
+					initial: () => html`<div>entries go here</div>`,
+					pending: () => html`<div>loading</div>`,
+					complete: (entries) => entries
+				})}
 			</div>
 		`;
 	}
 
-	static styles?: CSSResultGroup = css`
-		:host {
-			display: grid;
-			grid-template-rows: 4rem auto;
-			grid-template-columns: 85%;
-			justify-content: center;
-			gap: 1rem;
-
-			margin: 1rem;
-		}
-
-		.list {
-			display: grid;
-			gap: 3rem;
-			align-items: center;
-		}
-	`;
 }
