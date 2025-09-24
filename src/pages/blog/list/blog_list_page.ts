@@ -16,19 +16,16 @@ export class PlatBlogListElement extends LitElement {
 	@state()
 	private tagFilters: Tag[];
 
-	private entryListTask: Task;
+	private entryListTask: Task<Tag[], HTMLTemplateResult[]>;
 	
 	constructor() {
 		super();
 
 		this.tagFilters = [
-			Tag.Small,
-			Tag.Info,
-			Tag.Game
 		];
 
 		this.entryListTask = new Task(this, {
-			task: async (filters, {signal}) => {return await this.loadEntries(filters)},
+			task: async (filters) => {return await this.loadEntries(filters)},
 			args: () => [...this.tagFilters] as const
 		});
 	
@@ -50,6 +47,19 @@ export class PlatBlogListElement extends LitElement {
 	private removeFilter(removeEvent: CustomEvent<number>) {
 		this.tagFilters.splice(removeEvent.detail, 1);
 		this.tagFilters = [...this.tagFilters];
+	}
+
+	private addFilter(addEvent: CustomEvent<string>) {
+
+		for (const [key, tag] of Object.entries(Tag)) {
+
+			if (key.toLowerCase() === addEvent.detail) {
+				this.tagFilters.push(tag);
+				this.tagFilters = [...this.tagFilters];
+				
+				return;
+			}
+		}
 	}
 
 	private async loadEntries(filters: readonly Tag[]): Promise<HTMLTemplateResult[]> {
@@ -74,17 +84,18 @@ export class PlatBlogListElement extends LitElement {
 				throw(error);
 			}
 		}
-		console.log(entryFragments)
+
 		return entryFragments;
 	}
-
-
 
 	protected render(): HTMLTemplateResult {
 		
 		return html`
 			<div>
-				<plat-blog-search .tagFilters=${this.tagFilters} @remove=${this.removeFilter}></plat-blog-search>
+				<plat-blog-search 
+				.tagFilters=${this.tagFilters} 
+				@remove=${this.removeFilter}
+				@add=${this.addFilter}></plat-blog-search>
 				${this.entryListTask.render({
 					initial: () => html`<div>entries go here</div>`,
 					pending: () => html`<div>loading</div>`,

@@ -6,7 +6,6 @@ export class BlogTagDB {
 
 	constructor() {
 		this.blogTags = [];
-		this.loadBlogTags();
 	}
 
 	async loadBlogTags() {
@@ -21,5 +20,9 @@ export class BlogTagDB {
 
 	getTagMetadata(tagName: string): BlogTagMetadata | undefined {
 		return this.blogTags.find((blogTag) => blogTag.name === tagName);
+	}
+
+	getTags(): BlogTagMetadata[] {
+		return this.blogTags;
 	}
 }
