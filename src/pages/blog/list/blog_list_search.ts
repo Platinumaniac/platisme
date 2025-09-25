@@ -7,6 +7,7 @@ import "../../../elements/basic/button_dropdown";
 import { blogContext, type BlogData } from "../blog_context";
 import { consume } from "@lit/context";
 import { Task } from "@lit/task";
+import { styleMap, type StyleInfo } from "lit/directives/style-map.js";
 
 
 @customElement("plat-blog-search")
@@ -48,12 +49,15 @@ export class BlogSearchElement extends LitElement {
 		this.dispatchEvent(addEvent);
 	}
 
-	private renderTagFilterFragments(): HTMLTemplateResult[] {
+	private renderTagFilterFragments(tags: BlogTagMetadata[]): HTMLTemplateResult[] {
 		let tagFragments: HTMLTemplateResult[] = [];
 
 		for (const [index, filter] of this.tagFilters.entries()) {
+			const tagMeta: BlogTagMetadata | undefined = tags.find((tag) => tag.name === filter.toString())
+			if (!tagMeta) continue;
+
 			tagFragments.push(
-				html`<plat-tag-filter tag=${filter.toString()} @removePressed=${() => {this.removeTagFilter(index)}}></plat-tag-filter>`
+				html`<plat-tag-filter .tag=${tagMeta} @removePressed=${() => {this.removeTagFilter(index)}}></plat-tag-filter>`
 			);
 		}
 
@@ -67,9 +71,22 @@ export class BlogSearchElement extends LitElement {
 		for (const tag of tags) {
 			if (this.tagFilters.find((filter) => filter.toString() === tag.name)) continue;
 
+			const tagStyle: StyleInfo = {
+				"--tag-color": tag.color,
+				"--tag-alt-color": tag.alt_color,
+				"--tag-font-color": tag.font_color
+			};
 
 			tagFragments.push(html`
-					<button @click=${() => {this.addTagFilter(tag.name)}}>${tag.name}</button>
+					<button
+						style=${styleMap(tagStyle)}
+						@click=${() => {this.addTagFilter(tag.name)}}
+						class="dropdown-item"
+						slot="content"
+						>
+						<img src=${tag.icon} />
+						<span>${tag.name}</span>
+					</button>
 				`);
 		}
 
@@ -84,8 +101,12 @@ export class BlogSearchElement extends LitElement {
 					initial: () => html`<div>huh</div>`,
 					pending: () => html`<div>what</div>`,
 					complete: (tagMetas) => html`
-						${this.renderTagFilterFragments()}
+						${this.renderTagFilterFragments(tagMetas)}
 						<plat-dropdown-button label="+">
+							<img 
+								src="/src/assets/plus_icon.png"
+								class="add-icon"
+								slot="button"/>
 							${this.renderAddTagFragments(tagMetas)}
 						</plat-dropdown-button>
 					`
@@ -96,8 +117,61 @@ export class BlogSearchElement extends LitElement {
 	}
 
 	static styles: CSSResultGroup = css`
+			* {
+				font-family: Atkinson Hyperlegible Next;
+				font-weight: 650;
+			}
+
+
 			.search-container {
 				display: flex;
+				height: 100%;
+				width: 100%;
+			}
+
+			input {
+				flex: 1;
+			}
+
+			plat-dropdown-button {
+				height: 100%;
+				aspect-ratio: 1 / 1;
+				
+			}
+
+			.add-icon {
+				height: 60%;
+
+				image-rendering: pixelated;
+			}
+
+			.dropdown-item {
+				--tag-color: #fff;
+				--tag-alt-color: #fff;
+				--tag-font-color: #000;
+
+				display: flex;
+				gap: .5rem;
+				align-items: center;
+
+				font-size: 1rem;
+
+				color: var(--tag-font-color);
+				background: var(--tag-color);
+
+				padding: .5rem;
+				border: none;
+
+				cursor: pointer;
+			}
+			.dropdown-item:hover {
+				background: var(--tag-alt-color);
+			}
+		
+			.dropdown-item > img {
+				image-rendering: pixelated;
+
+				height: 2rem;
 			}
 		`;
 }

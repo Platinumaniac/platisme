@@ -1,4 +1,4 @@
-import { html, LitElement, type HTMLTemplateResult } from "lit";
+import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { blogContext, type BlogData } from "../blog_context";
 import { consume } from "@lit/context";
@@ -22,6 +22,8 @@ export class PlatBlogListElement extends LitElement {
 		super();
 
 		this.tagFilters = [
+			Tag.Small, 
+			Tag.Info
 		];
 
 		this.entryListTask = new Task(this, {
@@ -91,18 +93,39 @@ export class PlatBlogListElement extends LitElement {
 	protected render(): HTMLTemplateResult {
 		
 		return html`
-			<div>
+			<div class="page">
 				<plat-blog-search 
 				.tagFilters=${this.tagFilters} 
 				@remove=${this.removeFilter}
 				@add=${this.addFilter}></plat-blog-search>
-				${this.entryListTask.render({
-					initial: () => html`<div>entries go here</div>`,
-					pending: () => html`<div>loading</div>`,
-					complete: (entries) => entries
-				})}
+				<div class="entries">
+					${this.entryListTask.render({
+						initial: () => html`<div>entries go here</div>`,
+						pending: () => html`<div>loading</div>`,
+						complete: (entries) => entries
+					})}
+				</div>
 			</div>
 		`;
 	}
+
+	static styles: CSSResultGroup = css`
+		.page {
+			display: grid;
+			grid-template-rows: 3.5rem auto;
+			grid-template-columns: 80%;
+			gap: 1rem;
+			justify-content: center;
+			
+			height: 100%;
+		}
+		.entries {
+			display: grid;
+			grid-template-columns: auto auto;
+			grid-auto-rows: auto;
+			gap: 2rem;
+		}	
+
+	`;
 
 }

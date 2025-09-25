@@ -1,11 +1,8 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 
 @customElement("plat-dropdown-button")
 export class DropdownButton extends LitElement {
-
-	@property({ type: String})
-	public label: string;
 
 	@state()
 	private isOpen: boolean;
@@ -13,7 +10,6 @@ export class DropdownButton extends LitElement {
 	public constructor() {
 		super();
 
-		this.label = "";
 		this.isOpen = true;
 	}
 
@@ -23,10 +19,12 @@ export class DropdownButton extends LitElement {
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			<button @click=${this.toggleOpen}>${this.label}</button>
+			<button @click=${this.toggleOpen}>
+				<slot name="button"></slot>
+			</button>
 			<div ?hidden=${!this.isOpen} class="dropdown-container">
 				<div class="dropdown">
-					<slot></slot>
+					<slot name="content"></slot>
 				</div>
 			</div>
 		`;
@@ -37,6 +35,22 @@ export class DropdownButton extends LitElement {
 			display: flex;
 			flex-direction: column;
 		}
+
+		button {
+			height: 100%;
+			width: 100%;
+
+			background: var(--accent-color);
+
+			border: none;
+
+			cursor: pointer;
+		}
+
+		button:hover {
+			background: var(--accent-color-light);
+		}
+
 		.dropdown-container {
 			position: relative;
 		}
@@ -44,8 +58,11 @@ export class DropdownButton extends LitElement {
 			position: absolute;
 			z-index: 1;
 
+			min-width: 100%;
+
 			display: flex;
 			flex-direction: column;
+			
 		}
 	`;
 }

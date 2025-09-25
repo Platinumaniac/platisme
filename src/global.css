@@ -11,6 +11,9 @@
 	src: url("/src/assets/font/AtkinsonHyperlegibleNext-Light.ttf");
 }
 
+html, body {
+	height: 100%;
+}
 
 body{
 	margin: 0;

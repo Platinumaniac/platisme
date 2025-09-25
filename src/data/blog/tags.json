@@ -4,25 +4,29 @@
 			"name": "small",
 			"icon": "/src/assets/tags/small.png",
 			"color": "#c03048",
-			"alt_color": "#972669"
+			"alt_color": "#972669",
+			"font_color": "#ffffff"
 		},
 		{
 			"name": "big",
 			"icon": "/src/assets/tags/big.png",
 			"color": "#3755cd",
-			"alt_color": "#2f2697"
+			"alt_color": "#2f2697",
+			"font_color": "#ffffff"
 		},
 		{
 			"name": "info",
 			"icon": "/src/assets/tags/info.png",
 			"color": "#ffffff",
-			"alt_color": "#91c4e3"
+			"alt_color": "#91c4e3",
+			"font_color": "#000000"
 		},
 		{
 			"name": "game",
 			"icon": "/src/assets/tags/game.png",
 			"color": "#6437cd",
-			"alt_color": "#2f2697"
+			"alt_color": "#2f2697",
+			"font_color": "#ffffff"
 		}
 	]
 }

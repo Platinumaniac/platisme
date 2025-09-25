@@ -1,5 +1,5 @@
 import { Routes } from "@lit-labs/router";
-import { html, LitElement, type TemplateResult } from "lit";
+import { css, html, LitElement, type CSSResultGroup, type TemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { blogContext, type BlogData } from "./blog_context";
 import "./list/blog_list_page";
@@ -42,4 +42,12 @@ export class PlatBlogElement extends LitElement {
 			</div>
 		`;
 	}
+
+	static styles: CSSResultGroup = css`
+		:host, div {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+	`;
 }
