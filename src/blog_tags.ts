@@ -1,21 +1,12 @@
-import type { BlogTagDataCollection, BlogTagMetadata } from "./types";
+import type { BlogTagMetadata } from "./types";
+import blogTagCollection from "./data/blog/tags.json"
 
 export class BlogTagDB {
 
 	private blogTags: BlogTagMetadata[];
 
 	constructor() {
-		this.blogTags = [];
-	}
-
-	async loadBlogTags() {
-		try {
-			let tagCollection = await import("./data/blog/tags.json") as BlogTagDataCollection;
-			this.blogTags = tagCollection.tags;
-		}
-		catch {
-			//todo: add error handling
-		}
+		this.blogTags = blogTagCollection.tags;
 	}
 
 	getTagMetadata(tagName: string): BlogTagMetadata | undefined {

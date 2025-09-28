@@ -2,17 +2,12 @@ import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } f
 import { customElement, property } from "lit/decorators.js";
 import type { BlogPostMetadata } from "../../../types";
 import "../blog_tag";
-import { consume } from "@lit/context";
-import { blogContext, type BlogData } from "../blog_context";
 
 @customElement("plat-blog-list-entry")
 export class PlatBlogListEntryElement extends LitElement {
 
 	@property({type: Object})
 	public postMetadata: BlogPostMetadata;
-
-	@consume({context: blogContext})
-	private blogData?: BlogData;
 
 	public constructor() {
 		super();

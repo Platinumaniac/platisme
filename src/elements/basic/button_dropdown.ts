@@ -10,7 +10,7 @@ export class DropdownButton extends LitElement {
 	public constructor() {
 		super();
 
-		this.isOpen = true;
+		this.isOpen = false;
 	}
 
 	private toggleOpen() {

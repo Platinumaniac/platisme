@@ -1,7 +1,6 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import { blogContext, type BlogData } from "../blog_context";
-import { consume } from "@lit/context";
+import { blogData } from "../blog_data";
 import { type BlogPostMetadata, type BlogTag, Tag } from "../../../types";
 import "./blog_list_entry";
 import "./blog_list_search";
@@ -10,8 +9,6 @@ import { Task } from "@lit/task";
 @customElement("plat-blog-list")
 export class PlatBlogListElement extends LitElement {
 
-	@consume({context: blogContext})
-	private blogData?: BlogData
 
 	@state()
 	private tagFilters: Tag[];
@@ -30,7 +27,7 @@ export class PlatBlogListElement extends LitElement {
 			task: async (filters) => {return await this.loadEntries(filters)},
 			args: () => [...this.tagFilters] as const
 		});
-	
+		
 	}
 
 	private passesFilter(filters: readonly Tag[], blogPost: BlogPostMetadata): boolean {
@@ -65,11 +62,10 @@ export class PlatBlogListElement extends LitElement {
 	}
 
 	private async loadEntries(filters: readonly Tag[]): Promise<HTMLTemplateResult[]> {
-		if (!this.blogData) return [];
 
 		let entryFragments: HTMLTemplateResult[] = [];
 
-		for (const entry of this.blogData.publicEntries) {
+		for (const entry of blogData.publicEntries) {
 			let entryMeta: BlogPostMetadata;
 
 			try {
@@ -91,7 +87,7 @@ export class PlatBlogListElement extends LitElement {
 	}
 
 	protected render(): HTMLTemplateResult {
-		
+
 		return html`
 			<div class="page">
 				<plat-blog-search 

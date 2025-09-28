@@ -4,38 +4,20 @@ import { Tag, type BlogTagMetadata } from "../../../types";
 import "../blog_tag";
 import "./blog_tag_filter";
 import "../../../elements/basic/button_dropdown";
-import { blogContext, type BlogData } from "../blog_context";
-import { consume } from "@lit/context";
-import { Task } from "@lit/task";
 import { styleMap, type StyleInfo } from "lit/directives/style-map.js";
+import { blogData } from "../blog_data";
 
 
 @customElement("plat-blog-search")
 export class BlogSearchElement extends LitElement {
 
-	@consume({context: blogContext})
-	private blogData?: BlogData
-
 	@property({type: Array})
 	public tagFilters: Tag[];
-
-	private tagMetaTask: Task<Tag[], BlogTagMetadata[]>;
 
 	constructor() {
 		super();
 
 		this.tagFilters = [];
-		this.tagMetaTask = new Task(this, {
-			args: () => [...this.tagFilters],
-			task: async () => {
-				if (!this.blogData) return [];
-
-				await this.blogData.tagDB.loadBlogTags();
-				
-				return this.blogData.tagDB.getTags();
-			}
-		}
-		)
 	}
 
 	private removeTagFilter(index: number) {
@@ -49,7 +31,8 @@ export class BlogSearchElement extends LitElement {
 		this.dispatchEvent(addEvent);
 	}
 
-	private renderTagFilterFragments(tags: BlogTagMetadata[]): HTMLTemplateResult[] {
+	private renderTagFilterFragments(): HTMLTemplateResult[] {
+		const tags: BlogTagMetadata[] = blogData.tagDB.getTags();
 		let tagFragments: HTMLTemplateResult[] = [];
 
 		for (const [index, filter] of this.tagFilters.entries()) {
@@ -63,8 +46,8 @@ export class BlogSearchElement extends LitElement {
 
 		return tagFragments;
 	}
-	private renderAddTagFragments(tags: BlogTagMetadata[]): HTMLTemplateResult[] {
-		if (!this.blogData) return [];
+	private renderAddTagFragments(): HTMLTemplateResult[] {
+		const tags: BlogTagMetadata[] = blogData.tagDB.getTags();
 
 		let tagFragments: HTMLTemplateResult[] = [];
 
@@ -97,21 +80,15 @@ export class BlogSearchElement extends LitElement {
 		return html`
 			<div class="search-container">
 				<input type="text"/>
-				${this.tagMetaTask.render({
-					initial: () => html`<div>huh</div>`,
-					pending: () => html`<div>what</div>`,
-					complete: (tagMetas) => html`
-						${this.renderTagFilterFragments(tagMetas)}
-						<plat-dropdown-button label="+">
-							<img 
-								src="/src/assets/plus_icon.png"
-								class="add-icon"
-								slot="button"/>
-							${this.renderAddTagFragments(tagMetas)}
-						</plat-dropdown-button>
-					`
-				})}
-				
+				${this.renderTagFilterFragments()}
+
+				<plat-dropdown-button label="+">
+					<img 
+						src="/src/assets/plus_icon.png"
+						class="add-icon"
+						slot="button"/>
+					${this.renderAddTagFragments()}
+				</plat-dropdown-button>
 			</div>
 		`;
 	}

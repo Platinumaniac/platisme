@@ -11,13 +11,14 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	animation: 1.3s infinite ease-in dmc-anim;
+	animation: 1.3s infinite ease-in dmc-anim forwards;
 }
 
 
 
 @keyframes dmc-anim {
 	0%{
+		opacity: 1;
 		width: 0%;
 	}
 
@@ -46,5 +47,6 @@
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%) rotateZ(calc(360deg * 3));
+		opacity: 1;
 	}
 }
