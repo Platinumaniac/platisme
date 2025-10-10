@@ -37,3 +37,7 @@ export function getDefaultBlogTagMetadata(): BlogTagMetadata {
 		font_color: ""
 	};
 }
+
+export type Tweenable = {
+	value: number;
+}
