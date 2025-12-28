@@ -5,8 +5,8 @@ import { styleMap } from "lit/directives/style-map.js";
 import { Vector2 } from "../../vectors";
 
 
-@customElement("css-stardust")
-export class CsStardust extends LitElement {
+@customElement("plat-stardust")
+export class StardustElement extends LitElement {
 
 	@property({type: String})
 	imagePath: string;
@@ -51,7 +51,41 @@ export class CsStardust extends LitElement {
 		`;
 	}
 
-	static styles?: CSSResultGroup = [
+	static {
+		const documentStyles: CSSResultGroup = css`
+			@property --progress {
+				syntax: "<number>";
+				initial-value: 0;
+				inherits: false;
+			}
+
+			@property --amplitude {
+				syntax: "<length>";
+				initial-value: 60px;
+				inherits: false;
+			}
+
+			@property --origin-x {
+				syntax: "<length>";
+				initial-value: 0;
+				inherits: false;
+			}
+
+			@property --origin-y {
+				syntax: "<length";
+				initial-value: 0;
+				inherits: false;
+			}
+
+			@property --size-falloff {
+				syntax: "number";
+				initial-value: 0;
+				inherits: false;
+			}`;
+			document.adoptedStyleSheets.push(documentStyles.styleSheet!);
+	}
+
+	static styles: CSSResultGroup = [
 		unsafeCSS(starStyles),
 		css`
 			svg{

@@ -1,0 +1,51 @@
+#page {
+	display: flex;
+	flex-direction: column;
+}
+
+#frame-container {
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+	gap: 8rem;
+
+}
+
+.frame {
+	width: 20rem;
+	aspect-ratio: 1 / 1;
+
+	position: relative;
+}
+.frame > img {
+	width: 100%;
+
+	position: absolute;
+	z-index: 2;
+	
+	image-rendering: pixelated;
+
+	user-select: none;
+}
+.frame-content {
+	min-width: 16rem;
+	min-height: 16rem;
+
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+
+	clip-path: inset(1rem);
+	
+}
+.frame-content > img {
+	width: 100%;
+	
+
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);	
+}
