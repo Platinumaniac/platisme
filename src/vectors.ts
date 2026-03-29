@@ -23,6 +23,13 @@ export class Vector2 {
 		)
 	}
 
+	sub(subVector: Vector2): Vector2 {
+		return new Vector2(
+			this.x - subVector.x,
+			this.y - subVector.y
+		)
+	}
+
 	mul(mulVector: Vector2): Vector2 {
 		return new Vector2(
 			this.x * mulVector.x,

@@ -1,34 +1,3 @@
-@property --progress {
-	syntax: "<number>";
-	initial-value: 0;
-	inherits: false;
-}
-
-@property --amplitude {
-	syntax: "<length>";
-	initial-value: 60px;
-	inherits: false;
-}
-
-@property --origin-x {
-	syntax: "<length>";
-	initial-value: 0;
-	inherits: false;
-}
-
-@property --origin-y {
-	syntax: "<length";
-	initial-value: 0;
-	inherits: false;
-}
-
-@property --size-falloff {
-	syntax: "number";
-	initial-value: 0;
-	inherits: false;
-}
-
-
 .star {
 	--speed: 2;
 	--angle: calc(pi / 4);
@@ -39,7 +8,7 @@
 
 	--size-falloff: .5;
 
-	width: calc(64px - (var(--progress) * var(--size-falloff) * 1px));
+	width: max(calc(var(--progress) * var(--size-falloff) * 1px), 64px);
 	
 	x: calc(
 		/* origin */
@@ -49,7 +18,7 @@
 		(cos(var(--angle)) * var(--progress) * 1px * var(--speed)) +
 
 		/* wave */
-		sin(var(--progress) / 10) * var(--amplitude) * sin(var(--angle)));
+		sin(var(--progress) / 100) * var(--amplitude) * sin(var(--angle)));
 		
 	y: calc(
 		/* origin */
@@ -59,9 +28,9 @@
 		(sin(var(--angle)) * var(--progress) * 1px * var(--speed)) + 
 		
 		/* wave */
-		sin(var(--progress) / 10) * var(--amplitude) * cos(var(--angle)));
+		sin(var(--progress) / 100) * var(--amplitude) * cos(var(--angle)));
 
-	animation: var(--duration) linear var(--delay) infinite star-path;
+	animation: var(--duration) linear var(--delay) star-path infinite;
 }
 
 @keyframes star-path {

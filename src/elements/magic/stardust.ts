@@ -1,5 +1,5 @@
 import { css, html, LitElement, svg, unsafeCSS, type CSSResultGroup, type HTMLTemplateResult, type SVGTemplateResult } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement, property, state } from "lit/decorators.js";
 import starStyles from "./stardust.css?inline";
 import { styleMap } from "lit/directives/style-map.js";
 import { Vector2 } from "../../vectors";
@@ -9,15 +9,21 @@ import { Vector2 } from "../../vectors";
 export class StardustElement extends LitElement {
 
 	@property({type: String})
-	imagePath: string;
+	public imagePath: string;
 
-	constructor() {
+	@state()
+	private trails: SVGTemplateResult[];
+
+	public constructor() {
 		super();
 		this.imagePath = "";
+		this.trails = [];
+		document.adoptedStyleSheets.push()
+		this.addTrail(20, .1, Math.PI / 2, new Vector2());
 	}
 
 
-	generateTrail(amount: number, delay: number = .1, angle: number = Math.PI / 4, origin: Vector2): SVGTemplateResult {
+	public addTrail(amount: number, delay: number = .1, angle: number = Math.PI / 4, origin: Vector2) {
 
 		let stars: SVGTemplateResult[] = [];
 
@@ -27,7 +33,7 @@ export class StardustElement extends LitElement {
 				"--delay": `${index * delay}s`,
 				"--angle": angle,
 				"--duration": "8s",
-				"--speed": 9,
+				"--speed": 4,
 				"--origin-x": `${origin.x}px`,
 				"--origin-y": `${origin.y}px`
 			}
@@ -37,16 +43,17 @@ export class StardustElement extends LitElement {
 			);
 		}
 
-		return svg`
-		${stars}`;
+		this.trails = [...this.trails, svg`
+				<g>
+					${stars}
+				</g>
+		`];
 	}
 
 	protected render(): HTMLTemplateResult {
 		return html`
 			<svg>
-				${this.generateTrail(20, .1, Math.PI / 2, new Vector2())}
-				${this.generateTrail(20, .1, Math.PI / 4, new Vector2())}
-				${this.generateTrail(10, .1, 0, new Vector2())}
+				${this.trails}
 			</svg>
 		`;
 	}
@@ -88,6 +95,13 @@ export class StardustElement extends LitElement {
 	static styles: CSSResultGroup = [
 		unsafeCSS(starStyles),
 		css`
+			:host {
+				display: block;
+
+				width: 100%;
+				height: 100%;
+			}
+
 			svg{
 				width: 100%;
 				height: 100%;

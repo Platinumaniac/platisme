@@ -6,6 +6,7 @@ import "./index/index_page";
 import "./about/about_page";
 import "./blog/blog_page";
 import "./../elements/basic/auto_redirect";
+import "./activities/starshot";
 
 @customElement("plat-router")
 export class PlatRouterElement extends LitElement {
@@ -18,24 +19,23 @@ export class PlatRouterElement extends LitElement {
 			{path: "/about", render: () => html`<plat-about-page></plat-about-page>`},
 			{path: "/blog", render: () => html`<plat-auto-redirect path="/blog/list/"></plat-auto-redirect>`},
 			{path: "/blog/", render: () => html`<plat-auto-redirect path="/blog/list/"></plat-auto-redirect>`},
-			{path: "/blog/*", render: () => html`<plat-blog-page></plat-blog-page>`}
+			{path: "/blog/*", render: () => html`<plat-blog-page></plat-blog-page>`},
+			{path: "/starshot", render: () => html`<plat-starshot-page></plat-starshot-page>`}
 		]);
 	}
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			<div>
-				${this.router.outlet()}
-			</div>
+			${this.router.outlet()}
 		`;
 	}
 
 	static styles: CSSResultGroup = css`
-		:host, div {
-			display: flex;
-			flex-direction: column;
-
+		:host{
 			height: 100%;
+			
+			display: block;
+			
 		}
 	`;
 }
