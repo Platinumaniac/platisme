@@ -5,6 +5,7 @@ import { customElement } from "lit/decorators.js";
 export class IndexPageElement extends LitElement {
 	protected render(): HTMLTemplateResult {
 		return html`
-			`;
+
+		`;
 	}
 }

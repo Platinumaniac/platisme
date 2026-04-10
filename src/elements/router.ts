@@ -2,6 +2,8 @@ import { html, LitElement, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { Router } from "@lit-labs/router";
 import "urlpattern-polyfill";
+import "../pages/index";
+import "../pages/stuff";
 
 @customElement("plat-router")
 export class PlatRouterElement extends LitElement {
@@ -10,7 +12,8 @@ export class PlatRouterElement extends LitElement {
 	constructor() {
 		super();
 		this.router = new Router(this, [
-			{path: "/", render: () => html`<plat-index-page></plat-index-page>`},
+			{ path: "/", render: () => html`<plat-index-page></plat-index-page>` },
+			{path: "/stuff", render: () => html`<plat-stuff-page></plat-stuff-page>`},
 		]);
 	}
 
