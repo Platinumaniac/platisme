@@ -8,6 +8,10 @@ export class Vector2 {
 		this.y = y;
 	}
 
+	get length(): number {
+		return Math.hypot(this.x, this.y);
+	}
+
 	duplicate(): Vector2 {
 		return new Vector2(this.x, this.y);
 	}
@@ -36,7 +40,7 @@ export class Vector2 {
 			this.y * mulVector.y
 		)
 	}
-	
+
 	div(divVector: Vector2): Vector2 {
 		return new Vector2(
 			this.x / divVector.x,
