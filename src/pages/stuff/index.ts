@@ -1,6 +1,8 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type PropertyValues } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { styleMap, type StyleInfo } from "lit/directives/style-map.js";
+import { StuffPageDataSchema, type StuffPageData } from "../../types";
+import { map } from "lit/directives/map.js";
 
 // stuff may be foun here
 @customElement("plat-stuff-page")
@@ -13,7 +15,9 @@ export class StuffPageElement extends LitElement {
 	private isDragging: boolean;
 
 	@query("#wrapper")
-	private wrapper?: HTMLDivElement
+	private wrapper?: HTMLDivElement;
+
+	private stuffPages: StuffPageData[];
 
 	protected constructor() {
 		super();
@@ -22,6 +26,24 @@ export class StuffPageElement extends LitElement {
 		this.isDragging = false;
 		this.lastScroll = 0;
 
+		this.stuffPages = [
+			StuffPageDataSchema.parse({
+				iconPath: "/src/assets/stuff/icon_template.png",
+				id: "#"
+			},
+			),
+			StuffPageDataSchema.parse({
+				iconPath: "/src/assets/stuff/icon_template.png",
+				id: "#"
+			},
+			),
+			StuffPageDataSchema.parse({
+				iconPath: "/src/assets/stuff/icon_template.png",
+				id: "#"
+			},
+			)
+		];
+
 
 	}
 
@@ -29,6 +51,14 @@ export class StuffPageElement extends LitElement {
 		CSS.registerProperty(
 			{
 				name: "--angle-offset",
+				syntax: "<number>",
+				inherits: true,
+				initialValue: "0",
+			}
+		);
+		CSS.registerProperty(
+			{
+				name: "--point-count",
 				syntax: "<number>",
 				inherits: true,
 				initialValue: "0",
@@ -46,17 +76,21 @@ export class StuffPageElement extends LitElement {
 
 	private handleMouseMove(event: MouseEvent) {
 		if (this.isDragging) {
-			this.offset += event.movementX;
+			this.offset += event.movementX / 250;
 		}
 	}
 
 	private handleScrollWheel(event: WheelEvent) {
-		this.offset += event.deltaY * .5;
+		this.offset += event.deltaY / 1000;
 	}
 
 	protected render(): HTMLTemplateResult {
 		const circleStyle: StyleInfo = {
-			"--angle-offset": `${this.offset / 500}`
+			"--angle-offset": this.offset
+		};
+
+		if (!CSS.supports("opacity", "sibling-count()")) {
+			circleStyle["--point-count"] = this.stuffPages.length;
 		}
 
 		return html`
@@ -67,11 +101,20 @@ export class StuffPageElement extends LitElement {
 				@wheel=${this.handleScrollWheel}
 			>
 				<div id="circle" style=${styleMap(circleStyle)}>
-					<button class="point"></button>
-					<button class="point"></button>
-					<button class="point"></button>
-					<button class="point"></button>
-					<button class="point"></button>
+					${map(this.stuffPages.entries(), ([index, page]) => {
+						let iconUrl = new URL(page.iconPath, import.meta.url).href;
+						let pointStyle: StyleInfo = {};
+
+						if (!CSS.supports("opacity", "sibling-index()")) {
+							pointStyle["--sibling-index"] = index + 1;
+						};
+
+						return html`
+						<a class="point" href="/stuff/${page.id}" style=${styleMap(pointStyle)}>
+							<img src=${iconUrl} draggable="false"/>
+						</a>
+						`;
+					})}
 				</div>
 			</div>
 		`;
@@ -84,20 +127,20 @@ export class StuffPageElement extends LitElement {
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
+			cursor: grab;
 		}
 
 		#circle {
 			position: relative;
 		}
 
-		.point:first-child {
-			background: red;
-		}
-
 		.point {
+			/*fallback for browsers that lack support for sibling-count() and sibling-index() */
+			--sibling-index: 0;
 			--radius: calc(min(40dvh, 40dvw));
-			--angle-increment: calc(PI * 2 / sibling-count());
-			--angle: calc((-1 * (sibling-index() - 1) * var(--angle-increment) + PI / 2) - var(--angle-offset));
+			--angle-increment: calc(PI * 2 / var(--point-count));
+			--angle: calc(-1 * (var(--sibling-index) - 1) * var(--angle-increment) + PI / 2 - var(--angle-offset));
 
 			position: absolute;
 			top: calc(sin(var(--angle)) * var(--radius) / 3.25);
@@ -108,10 +151,23 @@ export class StuffPageElement extends LitElement {
 			width: calc((sin(var(--angle)) + 1.5) / 2 * 7.5rem);
 			aspect-ratio: 1;
 
-			border: none;
-			border-radius: 50%;
+			user-select: none;
+		}
+		.point > img {
+			width: 100%;
 
-			background-color: var(--accent-color);
+			image-rendering: pixelated;
+		}
+
+		@supports(opacity: sibling-index()) {
+			.point {
+				--sibling-index: sibling-index();
+			}
+		}
+		@supports(opacity: sibling-count()) {
+			.point {
+				--point-count: sibling-count();
+			}
 		}
 	`;
 }
