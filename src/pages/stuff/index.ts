@@ -30,18 +30,18 @@ export class StuffPageElement extends LitElement {
 			StuffPageDataSchema.parse({
 				iconPath: "/src/assets/stuff/icon_template.png",
 				id: "#"
-			},
+			}
 			),
 			StuffPageDataSchema.parse({
 				iconPath: "/src/assets/stuff/icon_template.png",
 				id: "#"
-			},
+			}
 			),
 			StuffPageDataSchema.parse({
 				iconPath: "/src/assets/stuff/icon_template.png",
 				id: "#"
-			},
-			)
+			}
+			),
 		];
 
 
@@ -129,6 +129,9 @@ export class StuffPageElement extends LitElement {
 			justify-content: center;
 
 			cursor: grab;
+
+			background:
+				linear-gradient(20deg, transparent, var(--primary-color));
 		}
 
 		#circle {
@@ -143,12 +146,12 @@ export class StuffPageElement extends LitElement {
 			--angle: calc(-1 * (var(--sibling-index) - 1) * var(--angle-increment) + PI / 2 - var(--angle-offset));
 
 			position: absolute;
-			top: calc(sin(var(--angle)) * var(--radius) / 3.25);
-			left: calc(cos(var(--angle)) * var(--radius));
-
+			top: calc(sin(var(--angle) - cos(var(--angle)) / 2) * var(--radius) / 3);
+			left: calc((cos(var(--angle) - cos(var(--angle)) / 2) * var(--radius)));
+			z-index: calc(((sin(var(--angle)) + 1) / 2) * 100);
 			transform: translate(-50%, -50%);
 
-			width: calc((sin(var(--angle)) + 1.5) / 2 * 7.5rem);
+			width: calc((sin(var(--angle)) + 2) / 2 * 6rem);
 			aspect-ratio: 1;
 
 			user-select: none;
