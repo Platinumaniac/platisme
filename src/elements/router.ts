@@ -2,8 +2,10 @@ import { html, LitElement, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { Router } from "@lit-labs/router";
 import "urlpattern-polyfill";
+import "./navbar";
 import "../pages/index";
-import "../pages/stuff";
+import "../pages/stuff/router";
+import "../pages/projects/router";
 
 @customElement("plat-router")
 export class PlatRouterElement extends LitElement {
@@ -12,14 +14,20 @@ export class PlatRouterElement extends LitElement {
 	constructor() {
 		super();
 		this.router = new Router(this, [
-			{ path: "/", render: () => html`<plat-index-page></plat-index-page>` },
-			{path: "/stuff", render: () => html`<plat-stuff-page></plat-stuff-page>`},
+			{path: "/", render: () => html`<plat-index-page></plat-index-page>`},
+			{path: "/stuff", render: () => html`<plat-stuff-router></plat-stuff-router>`},
+			{path: "/stuff/*", render: () => html`<plat-stuff-router></plat-stuff-router>`},
+			{path: "/projects", render: () => html`<plat-project-router></plat-project-router>`},
+			{path: "/projects/*", render: () => html`<plat-project-router></plat-project-router>`}
 		]);
 	}
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			${this.router.outlet()}
+			<plat-navbar></plat-navbar>
+			<div>
+				${this.router.outlet()}
+			</div>
 		`;
 	}
 }

@@ -1,7 +1,6 @@
-
 export class Vector2 {
-	x: number = 0;
-	y: number = 0;
+	public x: number = 0;
+	public y: number = 0;
 
 	constructor(x: number = 0, y: number = 0) {
 		this.x = x;
@@ -34,7 +33,7 @@ export class Vector2 {
 		)
 	}
 
-	mul(mulVector: Vector2): Vector2 {
+	mult(mulVector: Vector2): Vector2 {
 		return new Vector2(
 			this.x * mulVector.x,
 			this.y * mulVector.y

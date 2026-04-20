@@ -1,5 +1,5 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type PropertyValues } from "lit";
-import { customElement, property, query, state } from "lit/decorators.js";
+import { customElement, query, state } from "lit/decorators.js";
 import { styleMap, type StyleInfo } from "lit/directives/style-map.js";
 import { StuffPageDataSchema, type StuffPageData } from "../../types";
 import { map } from "lit/directives/map.js";
@@ -24,27 +24,9 @@ export class StuffPageElement extends LitElement {
 
 		this.offset = 0;
 		this.isDragging = false;
-		this.lastScroll = 0;
 
 		this.stuffPages = [
-			StuffPageDataSchema.parse({
-				iconPath: "/src/assets/stuff/icon_template.png",
-				id: "#"
-			}
-			),
-			StuffPageDataSchema.parse({
-				iconPath: "/src/assets/stuff/icon_template.png",
-				id: "#"
-			}
-			),
-			StuffPageDataSchema.parse({
-				iconPath: "/src/assets/stuff/icon_template.png",
-				id: "#"
-			}
-			),
 		];
-
-
 	}
 
 	protected firstUpdated(_changedProperties: PropertyValues): void {

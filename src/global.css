@@ -1,6 +1,6 @@
 :root {
-	--bg-color: #32374a;
-	--bg-color-light: #415b7d;
+	--background-color: #32374a;
+	--background-color-light: #415b7d;
 	--accent-color: #473bce;
 	--accent-color-light: #7c5cd6;
 	--accent-color-lighter: #b08fe2;
@@ -17,7 +17,7 @@ body {
 
 	margin: 0;
 	font-family: Atkinson Hyperlegible Next;
-	background-color: var(--bg-color);
+	background-color: var(--background-color);
 	color: white;
 }
 
