@@ -1,7 +1,7 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type PropertyValues } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
 import { styleMap, type StyleInfo } from "lit/directives/style-map.js";
-import { StuffPageDataSchema, type StuffPageData } from "../../types";
+import { stuffPageDataSchema, type StuffPageData } from "../../types";
 import { map } from "lit/directives/map.js";
 
 // stuff may be foun here

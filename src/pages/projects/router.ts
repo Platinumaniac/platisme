@@ -1,6 +1,7 @@
 import { Router } from "@lit-labs/router";
 import { html, LitElement, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
+import "../../elements/redirect";
 import "urlpattern-polyfill";
 import ".";
 
@@ -12,7 +13,8 @@ export class StuffRouterElement extends LitElement {
 		super();
 
 		this.router = new Router(this, [
-			{ path: "menu/", render: () => html`<plat-project-page></plat-project-page>` },
+			{ path: "", render: () => html`<plat-redirect path="/projects/menu"></plat-redirect>` },
+			{ path: "menu", render: () => html`<plat-project-page></plat-project-page>` },
 		]);
 	}
 
