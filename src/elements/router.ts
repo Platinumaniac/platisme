@@ -1,4 +1,4 @@
-import { html, LitElement, type HTMLTemplateResult } from "lit";
+import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import { Router } from "@lit-labs/router";
 import "urlpattern-polyfill";
@@ -30,4 +30,12 @@ export class PlatRouterElement extends LitElement {
 			</div>
 		`;
 	}
+	static styles: CSSResultGroup = css`
+		:host {
+			height: 100%;
+
+			display: grid;
+			grid-template-rows: max-content 1fr;
+		}
+	`;
 }

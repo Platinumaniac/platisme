@@ -37,10 +37,11 @@ export class ProjectPageElement extends LitElement {
 	static styles: CSSResultGroup = css`
 		:host {
 			box-sizing: border-box;
-			padding: 1rem;
+			height: 100%;
 
 			display: grid;
 			grid-template-columns: repeat(4, 1fr);
+			grid-template-rows: repeat(3, 1fr);
 		}
 	`;
 }
