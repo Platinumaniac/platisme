@@ -35,7 +35,7 @@ export class PlatRouterElement extends LitElement {
 			height: 100%;
 
 			display: grid;
-			grid-template-rows: max-content 1fr;
+			grid-template-rows: 7% 93%;
 		}
 	`;
 }

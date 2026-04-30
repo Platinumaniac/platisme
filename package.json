@@ -21,6 +21,8 @@
   },
   "devDependencies": {
     "@lit/localize-tools": "^0.8.0",
+    "@types/three": "^0.184.0",
+    "three": "^0.184.0",
     "typescript": "~5.9.2",
     "vite": "^7.1.6"
   }
