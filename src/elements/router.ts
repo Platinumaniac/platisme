@@ -32,10 +32,13 @@ export class PlatRouterElement extends LitElement {
 	}
 	static styles: CSSResultGroup = css`
 		:host {
+			position: relative;
+
 			height: 100%;
 
 			display: grid;
-			grid-template-rows: 7% 93%;
+			grid-template-rows: 6rem auto;
+			grid-template-columns: auto;
 		}
 	`;
 }

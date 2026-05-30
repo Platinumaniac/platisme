@@ -1,11 +1,12 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import "../../elements/projects/project_entry.ts";
-import { BoxGeometry, Camera, Euler, Mesh, MeshNormalMaterial, Object3D, PerspectiveCamera, Raycaster, Scene, Vector2, Vector3, WebGLRenderer } from "three/src/Three.js";
+import { BoxGeometry, Mesh, MeshNormalMaterial, Object3D, PerspectiveCamera, Raycaster, Scene, Vector2, Vector3, WebGLRenderer } from "three/src/Three.js";
 import { Task } from "@lit/task";
-import type { ProjectEntry } from "../../types.ts";
+import type { ProjectEntry } from "../../lib/types.ts";
 import { ResizeController } from "@lit-labs/observers/resize-controller.js";
 import { Group, Tween } from "@tweenjs/tween.js";
+import "../../elements/projects/project_entry.ts";
 
 @customElement("plat-project-page")
 export class ProjectPageElement extends LitElement {
@@ -13,7 +14,7 @@ export class ProjectPageElement extends LitElement {
 	private projectTask: Task<[], ProjectEntry[]>;
 	private resizeController: ResizeController<Vector2>;
 	private renderer: WebGLRenderer;
-	private camera: Camera;
+	private camera: PerspectiveCamera;
 	private scene: Scene;
 	@state()
 	private projectMeshes: Object3D[];
@@ -25,7 +26,7 @@ export class ProjectPageElement extends LitElement {
 
 		this.projectTask = new Task(this, {
 			task: async () => {
-				return (await import("./project_index.ts")).default;
+				return (await import("./project_index.ts")).PROJECTS;
 			},
 			args: () => []
 		});
@@ -84,11 +85,17 @@ export class ProjectPageElement extends LitElement {
 			 - (event.offsetY / canvasHeight) * 2 + 1),
 			this.camera);
 
+		let isSelectingProject: boolean = false;
+
 		for (const [index, projectMesh] of this.projectMeshes.entries()) {
 			if (raycast.intersectObject(projectMesh).length > 0) {
 				this.selectProject(index);
+				isSelectingProject = true;
 			}
+		}
 
+		if (!isSelectingProject) {
+			this.deselectProject();
 		}
 	}
 
@@ -100,54 +107,70 @@ export class ProjectPageElement extends LitElement {
 			this.projectMeshes[index].rotation
 		]).to([
 			new Vector3(0, .15, .4),
-			{
-				x: Math.PI / 5,
-				y: Math.PI / 3,
-				z: -Math.PI / 4,
-			}
+			new Vector3(Math.PI / 5, Math.PI / 3, -Math.PI / 4),
 		], 250)
 			.onUpdate(() => {
 				this.projectMeshes = [...this.projectMeshes];
 		});
 
+		if (isDeselecting) {
+			const deselectTween = this.getDeselectTween()!;
+			deselectTween.start();
+
+			if (this.selectedProjectIndex !== index) {
+				deselectTween.chain(selectTween);
+			} else {
+				this.selectedProjectIndex = undefined;
+				return;
+			}
+
+		}
+
+		this.selectionTweenGroup.add(selectTween);
+
 		if (!isDeselecting) {
 			selectTween.start();
+			this.selectedProjectIndex = index;
 		}
 	}
 
 	private deselectProject() {
-		const deselectionTween = new Tween([
+		const deselectTween = this.getDeselectTween();
+		deselectTween?.start();
+		this.selectedProjectIndex = undefined;
+	}
+	private getDeselectTween(): Tween | undefined {
+		if (this.selectedProjectIndex === undefined) {
+			return
+		}
+
+		const deselectTween = new Tween([
 			this.projectMeshes[this.selectedProjectIndex].position,
-			this.projectMeshes[index].rotation
+			this.projectMeshes[this.selectedProjectIndex].rotation
 		]).to([
-			new Vector3(0, .15, .4),
-			{
-				x: Math.PI / 5,
-				y: Math.PI / 3,
-				z: -Math.PI / 4,
-			}
-		], 250)
-			.onUpdate(() => {
-				this.projectMeshes = [...this.projectMeshes];
+			new Vector3(this.selectedProjectIndex * .09, 0, 0),
+			new Vector3(0, 0, 0),
+		], 250).onUpdate(() => {
+			this.projectMeshes = [...this.projectMeshes];
 		});
+		this.selectionTweenGroup.add(deselectTween);
+
+		return deselectTween;
 	}
 
 	private updateTweens(time: number) {
-
 		if (this.selectionTweenGroup !== undefined) {
-			if (!this.selectionTweenGroup.allStopped) {
-				this.selectionTweenGroup.update(time);
-			}
-			else {
-				this.selectionTweenGroup.removeAll();
-			}
-
+			this.selectionTweenGroup.update(time);
 		}
+
+		this.renderer.render(this.scene, this.camera);
 		requestAnimationFrame((time) => { this.updateTweens(time); });
 	}
 
 	protected render(): HTMLTemplateResult {
 		if (this.resizeController.value !== undefined && this.resizeController.value !== null) {
+			this.camera.aspect = this.resizeController.value.width / this.resizeController.value.height;
+			this.camera.updateProjectionMatrix();
 			this.renderer.setSize(this.resizeController.value.width, this.resizeController.value.height);
 		}
 
@@ -170,9 +193,15 @@ export class ProjectPageElement extends LitElement {
 						>
 							${this.renderer.domElement}
 						</div>
+						${this.selectedProjectIndex !== undefined ? html`
+							<plat-project-entry
+								.entry=${projects[this.selectedProjectIndex]}
+							></plat-project-entry>
+						` : html``}
 					`;
 				}
 			})}
+
 		`;
 	}
 
@@ -187,6 +216,11 @@ export class ProjectPageElement extends LitElement {
 			display: flex;
 			width: 100%;
 			height: 100%;
+		}
+
+		plat-project-entry {
+			top: 20%;
+			right: 20%;
 		}
 	`;
 }

@@ -1,11 +1,13 @@
 import { msg } from "@lit/localize";
+import type { ProjectEntry } from "../../lib/types";
 
-export default [
-	{
-	"id": "plat_pixel_icons",
-	"title": msg("Plat Pixel Icons"),
-	"tags": [
-		{"id": "art"}
-	]
-	}
+const ROCK_CANDY_ICONS: ProjectEntry = {
+	id: "rock_candy_icons",
+	title: msg("Rock Candy Icons"),
+	desc: msg(""),
+	tags: []
+}
+
+export const PROJECTS: ProjectEntry[] = [
+	ROCK_CANDY_ICONS,
 ]
