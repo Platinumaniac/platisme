@@ -22,7 +22,7 @@ export class IndexPageElement extends LitElement {
 			height: 100%;
 
 			display: grid;
-			grid-template-rows: 4rem auto;
+			grid-template-rows: 3rem auto;
 		}
 
 		#content {

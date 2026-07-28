@@ -8,12 +8,16 @@ export class NavbarElement extends LitElement {
 		return html`
 			<div class="fill left"></div>
 			<nav>
-				<a href="/" ?current=${window.location.pathname === "/"}>HOME</a>
-				<a href="/projects/menu" style="--button-color: #c94059;" ?current=${window.location.pathname === "/projects/menu"}>PROJECTS</a>
+				<a href="/" ?current=${this.matchesPath(/^\/$/)}>HOME</a>
+				<a href="/projects/menu" style="--button-color: #c94059;" ?current=${this.matchesPath(/^\/projects/)}>PROJECTS</a>
 				<a href="/gallery" style="--button-color: #fdd63b;">GALLERY</a>
 			</nav>
 			<div class="fill right"></div>
 		`;
+	}
+
+	private matchesPath(path: RegExp): boolean {
+		return path.exec(window.location.pathname) !== null;
 	}
 
 	static styles: CSSResultGroup = css`
