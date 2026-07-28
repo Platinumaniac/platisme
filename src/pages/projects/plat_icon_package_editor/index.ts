@@ -1,6 +1,7 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
 import "../../../elements/object_viewer";
+import "../../../elements/social_link";
 
 @customElement("pipe-project")
 export class PIPEElement extends LitElement {
@@ -9,9 +10,7 @@ export class PIPEElement extends LitElement {
 			<plat-object-viewer objectPath="/src/assets/models/pipe_case.glb"></plat-object-viewer>
 			<div id="info">
 				<h1>PIPE</h1>
-				<a>
-					<img
-				</a>
+				<plat-social-link href="https://codeberg.org/platinumaniac/rusty_pipe" site="codeberg"></plat-social-link>
 			</div>
 		`;
 	}

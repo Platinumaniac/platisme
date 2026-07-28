@@ -1,8 +1,6 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import codebergLogoUrl from "/src/assets/index/codeberg_logo.png";
-import githubLogoUrl from "/src/assets/index/github_logo.png";
-import blueskyLogoUrl from "/src/assets/index/bluesky_logo.png";
+import "../social_link";
 import "../funky_box";
 
 @customElement("plat-info")
@@ -15,15 +13,18 @@ export class PlatInfoElement extends LitElement {
 				</p>
 			</plat-funky-box>
 			<div id="socials-container">
-				<a href="https://bsky.app/profile/platinumaniac.bsky.social" target="blank" class="social">
-					<img src=${blueskyLogoUrl} alt="bluesky"/>
-				</a>
-				<a href="https://codeberg.org/platinumaniac" target="blank" class="social">
-					<img src=${codebergLogoUrl} alt="codeberg"/>
-				</a>
-				<a href="https://github.com/Platinumaniac" target="blank" class="social">
-					<img src=${githubLogoUrl} alt="github"/>
-				</a>
+				<plat-social-link
+					site="bluesky"
+					href="https://bsky.app/profile/platinumaniac.bsky.social"
+				></plat-social-link>
+				<plat-social-link
+					site="codeberg"
+					href="https://codeberg.org/platinumaniac"
+				></plat-social-link>
+				<plat-social-link
+					site="github"
+					href="https://github.com/Platinumaniac"
+				></plat-social-link>
 			</div>
 
 		`;
@@ -43,12 +44,6 @@ export class PlatInfoElement extends LitElement {
 
 			display: flex;
 			gap: 2rem;
-		}
-
-		.social > img {
-			height: 5rem;
-
-			image-rendering: pixelated;
 		}
 	`;
 

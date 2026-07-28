@@ -1,7 +1,7 @@
 import { ResizeController } from "@lit-labs/observers/resize-controller.js";
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { AmbientLight, HemisphereLight, PerspectiveCamera, Scene, Vector2, WebGLRenderer } from "three";
+import { HemisphereLight, PerspectiveCamera, Scene, Vector2, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
