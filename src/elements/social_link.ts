@@ -27,13 +27,17 @@ export class SocialLinkElement extends LitElement {
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			<a href=${this.href} target="blank">
-				<img src=${LOGO_MAP.get(this.site)}/>
+			<a href=${this.href} target="blank" draggable="false">
+				<img src=${LOGO_MAP.get(this.site)} draggable="false"/>
 			</a>
 		`;
 	}
 
 	static styles: CSSResultGroup = css`
+		:host {
+			user-select: none;
+		}
+
 		img {
 			height: 5rem;
 
