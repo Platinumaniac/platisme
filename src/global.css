@@ -1,6 +1,7 @@
 :root {
 	--background-color: #545987;
-	--background-color-light: #415b7d;
+	--background-color-dark: #393d65;
+	--background-color-darker: #2a2e59;
 	--accent-color: #473bce;
 	--accent-color-light: #7c5cd6;
 	--accent-color-lighter: #b08fe2;

@@ -1,12 +1,14 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import "../../elements/projects/project_entry.ts";
-import { BoxGeometry, Mesh, MeshNormalMaterial, Object3D, PerspectiveCamera, Raycaster, Scene, Vector2, Vector3, WebGLRenderer } from "three/src/Three.js";
+import { AmbientLight, Object3D, PerspectiveCamera, Raycaster, Scene, SpotLight, Vector2, Vector3, WebGLRenderer } from "three/src/Three.js";
 import { Task } from "@lit/task";
 import type { ProjectEntry } from "../../lib/types.ts";
 import { ResizeController } from "@lit-labs/observers/resize-controller.js";
 import { Group, Tween } from "@tweenjs/tween.js";
 import "../../elements/projects/project_entry.ts";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 
 @customElement("plat-project-page")
 export class ProjectPageElement extends LitElement {
@@ -18,15 +20,22 @@ export class ProjectPageElement extends LitElement {
 	private scene: Scene;
 	@state()
 	private projectMeshes: Object3D[];
+	private hoveredProjectIndex?: number;
 	private selectedProjectIndex?: number;
-	private selectionTweenGroup: Group
+	private selectionTweenGroup: Group;
+	private loader: GLTFLoader;
+	private controls?: OrbitControls;
 
 	public constructor() {
 		super();
 
 		this.projectTask = new Task(this, {
 			task: async () => {
-				return (await import("./project_index.ts")).PROJECTS;
+				return (await import("../../lib/projects")).PROJECTS;
+			},
+			onComplete: (projects) => {
+				this.projectMeshes = this.loadProjectMeshes(projects);
+				this.renderer.render(this.scene, this.camera);
 			},
 			args: () => []
 		});
@@ -39,12 +48,28 @@ export class ProjectPageElement extends LitElement {
 		this.projectMeshes = [];
 		this.selectionTweenGroup = new Group();
 
-		this.camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
+		this.camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 50);
 
-		this.camera.position.z = 1;
-		this.camera.position.y = .6;
-		this.camera.rotateX(-(Math.PI / 5));
+		this.camera.position.z = 15;
+		this.camera.position.y = 5;
+		this.camera.rotateX(-(Math.PI / 8));
 		this.renderer = new WebGLRenderer();
+		this.loader = new GLTFLoader();
+
+		const color = 0xFFFFFF;
+		const intensity = 1;
+		const light = new AmbientLight(color, intensity);
+		this.scene.add(light);
+
+		const light2 = new SpotLight(color, 1000);
+		//light2.position.z = 3;
+		//light2.position.y = 5;
+		light2.rotateX(Math.PI / 4);
+		this.scene.add(light2);
+
+		this.loader.load("/src/assets/models/project_scene.glb", (gltf) => {
+			this.scene.add(gltf.scene);
+		}, undefined,  console.error);
 
 		this.updateTweens(0);
 	}
@@ -64,19 +89,17 @@ export class ProjectPageElement extends LitElement {
 		let meshes: Object3D[] = [];
 
 		for (const [index, project] of projects.entries()) {
-			const geometry = new BoxGeometry(.08, .64, .32);
-			const material = new MeshNormalMaterial();
-			const mesh = new Mesh(geometry, material);
-			mesh.position.x = index * .09;
-			this.scene.add(mesh);
+			this.loader.load(project.modelPath, (gltf) => {
+				this.scene.add(gltf.scene);
 
-			meshes.push(mesh);
+				meshes.push(gltf.scene.children[0]);
+			}), undefined,  console.error;
 		}
 
 		return meshes;
 	}
 
-	private handleClick(event: PointerEvent) {
+	private handleMouseMotion(event: PointerEvent) {
 		const canvasWidth = this.resizeController.value!.width;
 		const canvasHeight = this.resizeController.value!.height;
 		const raycast = new Raycaster();
@@ -85,31 +108,45 @@ export class ProjectPageElement extends LitElement {
 			 - (event.offsetY / canvasHeight) * 2 + 1),
 			this.camera);
 
-		let isSelectingProject: boolean = false;
-
 		for (const [index, projectMesh] of this.projectMeshes.entries()) {
 			if (raycast.intersectObject(projectMesh).length > 0) {
-				this.selectProject(index);
-				isSelectingProject = true;
+				this.hoveredProjectIndex = index;
+				break;
+			}
+			if (index === this.projectMeshes.length - 1) {
+				this.hoveredProjectIndex = undefined;
 			}
 		}
 
-		if (!isSelectingProject) {
+		if (this.hoveredProjectIndex !== undefined) {
+			document.body.style.cursor = "pointer";
+		}
+		else {
+			document.body.style.cursor = "default";
+		}
+	}
+
+	private handleClick(event: PointerEvent) {
+		if (this.selectedProjectIndex !== undefined) {
 			this.deselectProject();
+		}
+		if (this.hoveredProjectIndex !== undefined) {
+			this.selectProject(this.hoveredProjectIndex);
 		}
 	}
 
 	private selectProject(index: number) {
 		const isDeselecting = this.selectedProjectIndex !== undefined;
-
+		console.log(index)
 		const selectTween = new Tween([
 			this.projectMeshes[index].position,
 			this.projectMeshes[index].rotation
 		]).to([
-			new Vector3(0, .15, .4),
-			new Vector3(Math.PI / 5, Math.PI / 3, -Math.PI / 4),
+			new Vector3(0, 1, 5),
+			new Vector3(Math.PI / 7, -Math.PI / 3.5, Math.PI / 4),
 		], 250)
 			.onUpdate(() => {
+				console.log(this.projectMeshes);
 				this.projectMeshes = [...this.projectMeshes];
 		});
 
@@ -182,13 +219,9 @@ export class ProjectPageElement extends LitElement {
 		return html`
 			${this.projectTask.render({
 				complete: (projects) => {
-					if (this.projectMeshes.length === 0) {
-						console.log(projects)
-						this.projectMeshes = this.loadProjectMeshes(projects);
-						this.renderer.render(this.scene, this.camera);
-					}
 					return html`
 						<div
+							@mousemove=${this.handleMouseMotion}
 							@click=${this.handleClick}
 						>
 							${this.renderer.domElement}
@@ -207,20 +240,28 @@ export class ProjectPageElement extends LitElement {
 
 	static styles: CSSResultGroup = css`
 		:host {
-			display: flex;
+			position: relative;
+
+			box-sizing: border-box;
 			width: 100%;
 			height: 100%;
+
+
+			display: flex;
 		}
 
 		#renderer {
-			display: flex;
 			width: 100%;
 			height: 100%;
+
+			display: flex;
 		}
 
 		plat-project-entry {
+			position: absolute;
 			top: 20%;
 			right: 20%;
+
 		}
 	`;
 }

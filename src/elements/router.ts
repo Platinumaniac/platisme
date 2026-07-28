@@ -1,11 +1,12 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
-import { customElement } from "lit/decorators.js";
+import { customElement, query } from "lit/decorators.js";
 import { Router } from "@lit-labs/router";
 import "urlpattern-polyfill";
 import "./navbar";
 import "../pages/index";
 import "../pages/stuff/router";
 import "../pages/projects/router";
+import type { NavbarElement } from "./navbar";
 
 @customElement("plat-router")
 export class PlatRouterElement extends LitElement {
@@ -18,16 +19,15 @@ export class PlatRouterElement extends LitElement {
 			{path: "/stuff", render: () => html`<plat-redirect path="/stuff/menu"></plat-redirect>`},
 			{path: "/stuff/*", render: () => html`<plat-stuff-router></plat-stuff-router>`},
 			{path: "/projects", render: () => html`<plat-redirect path="/projects/menu"></plat-redirect>`},
-			{path: "/projects/*", render: () => html`<plat-project-router></plat-project-router>`}
+			{path: "/projects/*", render: () => html`<plat-project-router></plat-project-router>` },
 		]);
+
 	}
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			<plat-navbar></plat-navbar>
-			<div>
-				${this.router.outlet()}
-			</div>
+
+			${this.router.outlet()}
 		`;
 	}
 	static styles: CSSResultGroup = css`
@@ -36,9 +36,6 @@ export class PlatRouterElement extends LitElement {
 
 			height: 100%;
 
-			display: grid;
-			grid-template-rows: 6rem auto;
-			grid-template-columns: auto;
 		}
 	`;
 }

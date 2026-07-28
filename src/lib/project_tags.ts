@@ -1,5 +1,7 @@
 import type { ProjectTag } from "./types";
 
-const ART_TAG: ProjectTag = {
-
+export const ART_TAG: ProjectTag = {
+	id: "art",
 }
+
+export const TAGS = [ART_TAG];

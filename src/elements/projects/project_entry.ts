@@ -17,17 +17,22 @@ export class ProjectEntryElement extends LitElement {
 	protected render(): HTMLTemplateResult {
 		console.log(this.entry);
 		return html`
-			<h2>${this.entry.title}</h2>
-			${map(this.entry.tags, tag => html`<plat-project-tag .tag=${tag}></plat-project-tag>`)}
+			<a href="/projects/${this.entry.id}">
+				<h2>${this.entry.title}</h2>
+				<p>${this.entry.desc}</p>
+				${map(this.entry.tags, tag => html`<plat-project-tag .tag=${tag}></plat-project-tag>`)}
+			</a>
 		`;
 	}
 
 	static styles: CSSResultGroup = css`
 		:host {
 			position: absolute;
+
 		}
 
-		h2 {
+		a {
+			text-decoration: none;
 			color: white;
 		}
 

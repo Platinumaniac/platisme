@@ -1,54 +1,48 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
 import { customElement } from "lit/decorators.js";
-import rSpaceImgUrl from "/src/assets/external/rspace.jpg";
 import "../../elements/magic/starhail";
+import "../../elements/index/info";
+import "../../elements/index/wizard";
+
 
 @customElement("plat-index-page")
 export class IndexPageElement extends LitElement {
 	protected render(): HTMLTemplateResult {
 		return html`
-
-			<div id="info-wrapper">
-				<div id="info">
-					<h2>Plat is me</h2>
-					<p>
-						something something, i am the plat something something
-					</p>
-					<h2>Also check out</h2>
-					<div>
-						<a href="https://rspace.co.uk" target="blank">
-							<img src=${rSpaceImgUrl} class="external"/>
-						</a>
-
-					</div>
-				</div>
-				<div id="wizard">
-
-				</div>
+			<plat-navbar></plat-navbar>
+			<div id="content">
+				<plat-info></plat-info>
+				<plat-wizard></plat-wizard>
 			</div>
-			<plat-starhail></plat-starhail>
 		`;
 	}
 
 	static styles: CSSResultGroup = css`
-		#info-wrapper {
+		:host {
 			height: 100%;
 
 			display: grid;
-			grid-template-columns: 1fr 1fr;
-			align-items: center;
-			justify-content: center;
+			grid-template-rows: 4rem auto;
 		}
 
-		#info {
-			width: 75%;
+		#content {
+			box-sizing: border-box;
+			height: 100%;
+			padding: 2rem;
 
-			justify-self: center;
+			display: grid;
+			grid-template-columns: 1fr 1fr 2fr;
+			grid-template-rows: 1fr 1fr;
+			grid-template-areas: "info check wizard" "news news wizard";
+			gap: 2rem;
 		}
 
-		img.external {
-			aspect-ratio: 1;
-			border-radius: 50%;
+		plat-info {
+			grid-area: info;
+		}
+
+		plat-wizard {
+			grid-area: wizard;
 		}
 	`;
 }
