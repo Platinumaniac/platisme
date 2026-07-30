@@ -41,13 +41,10 @@ export class StuffRouterElement extends LitElement {
 
 	static styles: CSSResultGroup = css`
 		:host {
-			position: relative;
-		}
+			height: 100%;
 
-		plat-navbar {
-			position: fixed;
-
-			z-index: 2;
+			display: grid;
+			grid-template-rows: 4rem auto;
 		}
 	`;
 }

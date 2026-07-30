@@ -1,7 +1,7 @@
 import { ResizeController } from "@lit-labs/observers/resize-controller.js";
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type PropertyValues } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { HemisphereLight, PerspectiveCamera, Scene, Vector2, WebGLRenderer } from "three";
+import { Euler, HemisphereLight, PerspectiveCamera, Scene, Vector2, Vector3, WebGLRenderer } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
@@ -27,6 +27,7 @@ export class ObjectViewerElement extends LitElement {
 		});
 
 		this.renderer = new WebGLRenderer();
+		this.renderer.setClearColor( 0x000000, 0);
 		this.camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 50);
 		this.camera.position.z = 10;
 		this.scene = new Scene();
@@ -43,6 +44,7 @@ export class ObjectViewerElement extends LitElement {
 	public firstUpdated(_changedProperties: PropertyValues): void {
 		this.loader.load(this.objectPath, (gltf) => {
 			this.scene.add(gltf.scene);
+			gltf.scene.children[0].setRotationFromEuler(new Euler(Math.PI / 7, -Math.PI / 3.5, Math.PI / 4));
 		}, undefined,  console.error);
 		this.processFrame(0);
 	}
