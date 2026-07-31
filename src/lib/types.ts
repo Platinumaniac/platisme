@@ -1,10 +1,17 @@
 import { html, type HTMLTemplateResult } from "lit";
 
+export type MainPageData = {
+	name: string,
+	color: string,
+	href: string,
+	regex: RegExp,
+}
+
+
 export type StuffPageData = {
 	iconPath: string,
 	id: string,
 }
-
 
 export type ProjectTag = {
 	id: string,

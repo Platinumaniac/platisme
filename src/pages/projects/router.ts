@@ -5,7 +5,6 @@ import "../../elements/redirect";
 import "urlpattern-polyfill";
 import ".";
 import { PROJECTS } from "../../lib/projects";
-import type { RouteConfig } from "@lit-labs/router";
 
 @customElement("plat-project-router")
 export class StuffRouterElement extends LitElement {
@@ -34,7 +33,7 @@ export class StuffRouterElement extends LitElement {
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			<plat-navbar></plat-navbar>
+
 			${this.router.outlet()}
 		`;
 	}
@@ -44,7 +43,7 @@ export class StuffRouterElement extends LitElement {
 			height: 100%;
 
 			display: grid;
-			grid-template-rows: 4rem auto;
+
 		}
 	`;
 }

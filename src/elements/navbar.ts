@@ -1,18 +1,56 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult} from "lit";
 import { customElement } from "lit/decorators.js";
+import type { MainPageData } from "../lib/types";
+import { map } from "lit/directives/map.js";
 
 @customElement("plat-navbar")
 export class NavbarElement extends LitElement {
+	private pages: MainPageData[];
+
+	public constructor() {
+		super();
+
+		this.pages = [
+			{
+				name: "HOME",
+				color: "#439ad0",
+				href: "/",
+				regex: /^\/$/,
+			},
+			{
+				name: "PROJECTS",
+				color: "#c94059",
+				href: "/projects/menu",
+				regex: /^\/projects/,
+			},
+			{
+				name: "GALLERY",
+				color: "#fdd63b",
+				href: "/",
+				regex: /^\/$/,
+			},
+		];
+	}
+
 	protected render(): HTMLTemplateResult {
-		console.log(window.location.pathname);
+
 		return html`
-			<div class="fill left"></div>
+			<div class="fill left" part="fill"></div>
 			<nav>
-				<a href="/" ?current=${this.matchesPath(/^\/$/)}>HOME</a>
-				<a href="/projects/menu" style="--button-color: #c94059;" ?current=${this.matchesPath(/^\/projects/)}>PROJECTS</a>
-				<a href="/gallery" style="--button-color: #fdd63b;">GALLERY</a>
+				${map(this.pages, (page => {
+					const isCurrent = this.matchesPath(page.regex);
+
+					return html`
+						<a
+							href=${page.href}
+							?current=${isCurrent}
+							style="--button-color: ${page.color};"
+							part="nav-link ${isCurrent ? 'current' : ''}"
+							>${page.name}</a>
+					`;
+					}))}
 			</nav>
-			<div class="fill right"></div>
+			<div class="fill right" part="fill"></div>
 		`;
 	}
 

@@ -8,7 +8,8 @@ export class PIPEElement extends LitElement {
 	protected render(): HTMLTemplateResult {
 
 		return html`
-			<plat-object-viewer objectPath="/src/assets/models/pipe_case.glb"></plat-object-viewer>
+			<plat-navbar></plat-navbar>
+			<plat-object-viewer objectPath="/src/assets/models/pipe_case_outlined.glb"></plat-object-viewer>
 			<div id="info">
 				<h1>Plat Icon Package Editor</h1>
 				<h2>What is PIPE?</h2>
@@ -19,6 +20,7 @@ export class PIPEElement extends LitElement {
 				<p>
 					PIPE allows for importing a tileset, defining icons from said tileset and exporting it to a proper format for use in an IDE. As of now it only supports VSCode, but exporting to zed is in the works.
 				</p>
+				<h2>Where do i find PIPE?</h2>
 				<div id="links">
 					<plat-social-link href="https://codeberg.org/platinumaniac/rusty_pipe" site="codeberg"></plat-social-link>
 				</div>
@@ -28,42 +30,58 @@ export class PIPEElement extends LitElement {
 
 	static styles: CSSResultGroup = css`
 		:host {
+			--accent-color: #c94059;
+			--accent-color-light: #d86d80;
+			--background-color: #1b1b1b;
+			--background-color-light: #5b5b5b;
+
 			position: relative;
 
 			box-sizing: border-box;
 			height: 100%;
-			padding: 2rem;
 
-			display: flex;
-			align-items: center;
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			grid-template-rows: max-content auto;
+			grid-template-areas: "nav nav" "view info";
+			gap: .15rem;
 
-
+			background: var(--background-color-light);
 		}
-		plat-object-viewer {
-			position: absolute;
-			left: 30%;
-			top: 50%;
+		plat-navbar {
+			box-sizing: border-box;
+			padding: .5rem;
+			padding-left: 2rem;
 
-			width: 35%;
-			aspect-ratio: 1;
-			border: solid 2rem var(--background-color-dark);
-			border-radius: 50%;
-
-			display: block;
+			grid-area: nav;
 
 			background: var(--background-color);
+		}
+		plat-navbar::part(nav-link) {
+			border: .2rem solid var(--accent-color-light);
+			margin: 0;
 
-			transform: translate(-50%, -50%);
+			background: var(--accent-color);
+
+			box-shadow: none;
+		}
+		plat-navbar::part(fill) {
+			display: none;
 		}
 
+		plat-object-viewer {
+			box-sizing: border-box;
+			min-width: 0;
+			min-height: 0;
+
+			background: var(--background-color);
+		}
 		#info {
 			box-sizing: border-box;
 			padding: 1rem;
-			padding-left: 25%;
-			border-radius: 1rem;
-			margin-left: 30%;
+			width: 100%;
 
-			background: var(--background-color-dark);
+			background: var(--background-color);
 		}
 	`;
 }
