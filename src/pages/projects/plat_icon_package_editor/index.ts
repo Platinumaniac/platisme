@@ -58,6 +58,15 @@ export class PIPEElement extends LitElement {
 			background: var(--background-color);
 		}
 		plat-navbar::part(nav-link) {
+			border: .1rem solid var(--background-color-light);
+			margin: 0;
+
+			background: var(--background-color);
+
+
+			box-shadow: none;
+		}
+		plat-navbar::part(nav-link current) {
 			border: .2rem solid var(--accent-color-light);
 			margin: 0;
 

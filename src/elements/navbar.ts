@@ -23,12 +23,6 @@ export class NavbarElement extends LitElement {
 				href: "/projects/menu",
 				regex: /^\/projects/,
 			},
-			{
-				name: "GALLERY",
-				color: "#fdd63b",
-				href: "/",
-				regex: /^\/$/,
-			},
 		];
 	}
 
@@ -93,15 +87,20 @@ export class NavbarElement extends LitElement {
 			position: relative;
 
 			box-sizing: border-box;
-			padding: .5rem;
+
+			padding: .75rem;
 			border: solid .2rem transparent;
 			border-radius: .4rem;
 			margin-bottom: .5rem;
 
+			display: flex;
+			align-content: center;
+			justify-content: center;
+
 			font-size: 1.2rem;
-			line-height: 1.5;
+			line-height: 100%;
 			font-weight: 900;
-			font-family: "atkinson hyperlegible next";
+			font-family: "Atkinson Hyperlegible Next";
 			text-align: center;
 			text-decoration: none;
 			text-baseline: middle;
