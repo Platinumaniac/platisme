@@ -10,17 +10,21 @@ export class ObjectViewerElement extends LitElement {
 	@property({type: String})
 	public objectPath: string;
 
+	@property({ type: Boolean })
+	public isControlled: boolean;
+
 	private resizeController: ResizeController<Vector2>;
 	private renderer: WebGLRenderer;
 	private camera: PerspectiveCamera;
 	private scene: Scene;
 	private loader: GLTFLoader;
-	private cameraControls: OrbitControls;
+	private cameraControls?: OrbitControls;
 
 	public constructor() {
 		super();
 
 		this.objectPath = "";
+		this.isControlled = false;
 
 		this.resizeController = new ResizeController(this, {
 			callback: this.parseResize
@@ -29,16 +33,15 @@ export class ObjectViewerElement extends LitElement {
 		this.renderer = new WebGLRenderer();
 		this.renderer.setClearColor( 0x000000, 0);
 		this.camera = new PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 50);
-		this.camera.position.z = 10;
+		this.camera.position.z = 9.5;
 		this.scene = new Scene();
 		const skyColor = 0x9dbfdff;
 		const groundColor = 0xffc278;
-		const intensity = 1;
+		const intensity = 5;
 		const light = new HemisphereLight(skyColor, groundColor, intensity);
 		this.scene.add(light);
 		this.loader = new GLTFLoader();
-		this.cameraControls = new OrbitControls(this.camera, this);
-		this.cameraControls.enableZoom = false;
+
 	}
 
 	public firstUpdated(_changedProperties: PropertyValues): void {
@@ -47,6 +50,11 @@ export class ObjectViewerElement extends LitElement {
 			gltf.scene.children[0].setRotationFromEuler(new Euler(Math.PI / 7, -Math.PI / 3.5, Math.PI / 4));
 		}, undefined,  console.error);
 		this.processFrame(0);
+
+		if (this.isControlled) {
+			this.cameraControls = new OrbitControls(this.camera, this);
+			this.cameraControls.enableZoom = false;
+		}
 	}
 
 	private parseResize(entries: ResizeObserverEntry[]): Vector2 {
@@ -62,7 +70,7 @@ export class ObjectViewerElement extends LitElement {
 
 	private processFrame(delta: number): void {
 		this.requestUpdate();
-
+		this.cameraControls?.update(delta);
 		requestAnimationFrame((delta) => { this.processFrame(delta); });
 	}
 
@@ -73,7 +81,7 @@ export class ObjectViewerElement extends LitElement {
 			this.camera.updateProjectionMatrix();
 			this.renderer.setSize(this.resizeController.value.width, this.resizeController.value.height);
 		}
-		this.cameraControls.update();
+
 		this.renderer.render(this.scene, this.camera);
 
 		return html`

@@ -32,9 +32,9 @@ export class IndexPageElement extends LitElement {
 
 			display: grid;
 			grid-template-columns: 1fr 1fr 2fr;
-			grid-template-rows: 1fr 1fr;
-			grid-template-areas: "info check wizard" "news news wizard";
+			grid-template-areas: "info check wizard";
 			gap: 2rem;
+			align-items: center;
 		}
 
 		plat-info {

@@ -33,7 +33,7 @@ export class PlatInfoElement extends LitElement {
 	static styles: CSSResultGroup = css`
 		:host {
 			position: relative;
-			padding-bottom: 1rem;
+			padding-bottom: 3rem;
 		}
 
 		#socials-container {

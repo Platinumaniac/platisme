@@ -9,7 +9,7 @@ export class PIPEElement extends LitElement {
 
 		return html`
 			<plat-navbar></plat-navbar>
-			<plat-object-viewer objectPath="/src/assets/models/pipe_case_outlined.glb"></plat-object-viewer>
+			<plat-object-viewer objectPath="/src/assets/models/pipe_case_outlined.glb" isControlled></plat-object-viewer>
 			<div id="info">
 				<h1>Plat Icon Package Editor</h1>
 				<h2>What is PIPE?</h2>
@@ -44,7 +44,7 @@ export class PIPEElement extends LitElement {
 			grid-template-columns: 1fr 1fr;
 			grid-template-rows: max-content auto;
 			grid-template-areas: "nav nav" "view info";
-			gap: .15rem;
+			gap: .1rem;
 
 			background: var(--background-color-light);
 		}
@@ -62,7 +62,6 @@ export class PIPEElement extends LitElement {
 			margin: 0;
 
 			background: var(--background-color);
-
 
 			box-shadow: none;
 		}

@@ -4,4 +4,8 @@ export const ART_TAG: ProjectTag = {
 	id: "art",
 }
 
-export const TAGS = [ART_TAG];
+export const RUST_TAG: ProjectTag = {
+	id: "rust"
+}
+
+export const TAGS = [ART_TAG, RUST_TAG];
