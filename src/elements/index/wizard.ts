@@ -1,23 +1,9 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
-import { customElement, state } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import wizardImageUrl from "/src/assets/index/wizard/wizard.png";
 
 @customElement("plat-wizard")
 export class WizardElement extends LitElement {
-	@state()
-	private lines: string[];
-	@state()
-	private lineIndex: number;
-
-	public constructor() {
-		super();
-
-		this.lines = [
-
-
-		];
-		this.lineIndex = 0;
-	}
 
 	protected render(): HTMLTemplateResult {
 		return html`

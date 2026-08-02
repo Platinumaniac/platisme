@@ -13,7 +13,6 @@ export class ProjectPageElement extends LitElement {
 			<plat-navbar></plat-navbar>
 			<div id="projects">
 				${map(PROJECTS, (project) => {
-					console.log(project);
 					return html`
 					<plat-project-entry .entry=${project}></plat-project-entry>
 				`;

@@ -1,13 +1,11 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } from "lit";
-import { customElement, query } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { Router } from "@lit-labs/router";
 import "urlpattern-polyfill";
 import "./navbar";
 import "../pages/index";
 import "../pages/stuff/router";
 import "../pages/projects/router";
-import type { NavbarElement } from "./navbar";
-
 @customElement("plat-router")
 export class PlatRouterElement extends LitElement {
 	private router: Router;

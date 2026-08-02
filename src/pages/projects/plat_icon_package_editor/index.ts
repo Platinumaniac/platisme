@@ -2,6 +2,8 @@ import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult } f
 import { customElement } from "lit/decorators.js";
 import "../../../elements/object_viewer";
 import "../../../elements/social_link";
+import PIPE_CASE from "/src/assets/models/pipe_case_outlined.glb?url";
+
 
 @customElement("pipe-project")
 export class PIPEElement extends LitElement {
@@ -9,7 +11,7 @@ export class PIPEElement extends LitElement {
 
 		return html`
 			<plat-navbar></plat-navbar>
-			<plat-object-viewer objectPath="/src/assets/models/pipe_case_outlined.glb" isControlled></plat-object-viewer>
+			<plat-object-viewer objectPath=${PIPE_CASE} isControlled></plat-object-viewer>
 			<div id="info">
 				<h1>Plat Icon Package Editor</h1>
 				<h2>What is PIPE?</h2>

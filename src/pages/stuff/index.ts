@@ -1,5 +1,5 @@
 import { css, html, LitElement, type CSSResultGroup, type HTMLTemplateResult, type PropertyValues } from "lit";
-import { customElement, query, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { styleMap, type StyleInfo } from "lit/directives/style-map.js";
 import { type StuffPageData } from "../../lib/types";
 import { map } from "lit/directives/map.js";
@@ -13,9 +13,6 @@ export class StuffPageElement extends LitElement {
 
 	@state()
 	private isDragging: boolean;
-
-	@query("#wrapper")
-	private wrapper?: HTMLDivElement;
 
 	private stuffPages: StuffPageData[];
 

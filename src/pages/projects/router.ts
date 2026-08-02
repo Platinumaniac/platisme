@@ -23,7 +23,7 @@ export class StuffRouterElement extends LitElement {
 			this.router.routes.push({
 				path: `${PROJECT.id}`,
 				render: () => {
-					import(`/src/pages/projects/${PROJECT.id}`);
+					import(`./${PROJECT.id}/index.ts`);
 					return PROJECT.element;
 				}
 			});
