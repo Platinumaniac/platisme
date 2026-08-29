@@ -15,7 +15,7 @@ export class PlatInfoElement extends LitElement {
 			<div id="socials-container">
 				<plat-social-link
 					site="bluesky"
-					href="https://bsky.app/profile/platinumaniac.bsky.social"
+					href="https://bsky.app/profile/platis.me"
 				></plat-social-link>
 				<plat-social-link
 					site="codeberg"
