@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "allowBuilds": { "esbuild": true },
   "devEngines": {
     "runtime": { "name": "node", "version": "^22.0.0", "onFail": "download" }
   },
