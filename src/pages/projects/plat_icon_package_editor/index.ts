@@ -16,7 +16,7 @@ export class PIPEElement extends LitElement {
 				<h1>Plat Icon Package Editor</h1>
 				<h2>What is PIPE?</h2>
 				<p>
-					PIPE is a tool I thought writing JSON for my icon theme was annoying. It started out as a small and admittedly bad web application, but eventually i didn't feel like maintaining a web app anymore so i ported it to rust. This took quite a while as it is the first GUI application i have made using rust and I suffer from laziness.
+					PIPE is a tool I made because I thought writing JSON for my icon theme was annoying. It started out as a small and admittedly bad web application, but eventually i didn't feel like maintaining a web app anymore so i ported it to rust. This took quite a while as it is the first GUI application i have made using rust and I suffer from laziness.
 				</p>
 				<h2>What does PIPE do?</h2>
 				<p>
