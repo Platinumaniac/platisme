@@ -14,10 +14,10 @@ export class PlatRouterElement extends LitElement {
 		super();
 		this.router = new Router(this, [
 			{path: "/", render: () => html`<plat-index-page></plat-index-page>`},
-			{path: "/stuff", render: () => html`<plat-redirect path="/stuff/menu"></plat-redirect>`},
-			{path: "/stuff/*", render: () => html`<plat-stuff-router></plat-stuff-router>`},
-			{path: "/projects", render: () => html`<plat-redirect path="/projects/menu"></plat-redirect>`},
-			{path: "/projects/*", render: () => html`<plat-project-router></plat-project-router>` },
+			{path: "/#/stuff", render: () => html`<plat-redirect path="/stuff/menu"></plat-redirect>`},
+			{path: "/#/stuff/*", render: () => html`<plat-stuff-router></plat-stuff-router>`},
+			{path: "/#/projects", render: () => html`<plat-redirect path="/projects/menu"></plat-redirect>`},
+			{path: "/#/projects/*", render: () => html`<plat-project-router></plat-project-router>` },
 		]);
 
 	}

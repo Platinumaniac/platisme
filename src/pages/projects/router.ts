@@ -14,7 +14,7 @@ export class StuffRouterElement extends LitElement {
 		super();
 
 		this.router = new Router(this, [
-			{ path: "", render: () => html`<plat-redirect path="/projects/menu"></plat-redirect>` },
+			{ path: "", render: () => html`<plat-redirect path="/#/projects/menu"></plat-redirect>` },
 			{ path: "menu", render: () => html`<plat-project-page></plat-project-page>` },
 		]);
 

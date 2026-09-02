@@ -72,7 +72,7 @@ export class WizardElement extends LitElement {
 
 	protected render(): HTMLTemplateResult {
 		return html`
-			<img id="wizard" src=${wizardImageUrl} alt="THE WIZARD!!!" draggable="false" @click=${this.queueLine}/>
+			<img id="wizard" src=${wizardImageUrl} alt="THE WIZARD!!!" draggable="false" @click=${this.queueLine} ?speaking=${this.isSpeaking}/>
 			<div id="bubble" ?hidden=${this.speechBuffer === ""}>${this.speechBuffer}</div>
 		`;
 	}
@@ -102,6 +102,11 @@ export class WizardElement extends LitElement {
 
 			user-select: none;
 			cursor: pointer;
+
+			animation: none;
+		}
+		img[speaking] {
+			animation: speak .5s infinite;
 		}
 		img[ascending] {
 			animation: ascend 2s forwards;
@@ -135,6 +140,24 @@ export class WizardElement extends LitElement {
 
 			background: white;
 
+		}
+
+		@keyframes speak {
+			0% {
+				transform:
+					translate(-50%, -50%)
+					scale(1, 1);
+			}
+			50% {
+				transform:
+					translate(-50%, -50%)
+					scale(.9, .7);
+			}
+			100% {
+				transform:
+					translate(-50%, -50%)
+					scale(1, 1);
+			}
 		}
 
 		@keyframes ascend {

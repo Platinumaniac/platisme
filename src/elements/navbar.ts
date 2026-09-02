@@ -20,7 +20,7 @@ export class NavbarElement extends LitElement {
 			{
 				name: "PROJECTS",
 				color: "#c94059",
-				href: "/projects/menu",
+				href: "/#/projects/menu",
 				regex: /^\/projects/,
 			},
 		];
